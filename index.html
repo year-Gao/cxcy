@@ -1,0 +1,4777 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>棱镜舞台 - AI舞蹈新"视"界</title>
+    <!-- 添加字体 -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <!-- 添加视差库 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/rellax/1.12.1/rellax.min.js"></script>
+    <!-- 添加动画库 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+    <style>
+        :root {
+            --primary-color: #2E3BFF;
+            /* 科技蓝 */
+            --secondary-color: #00FFCC;
+            /* 亮青色 */
+            --accent-color: #FF3366;
+            /* 亮粉色 */
+            --dark-color: #121240;
+            /* 深蓝色 */
+            --light-color: #F2F6FF;
+            /* 浅蓝色背景 */
+            --text-color: #E0E6FF;
+            /* 亮文本颜色 */
+            --gray-color: #A0A8D0;
+            /* 亮灰色文本 */
+            --gradient-primary: linear-gradient(135deg, var(--primary-color) 0%, #6D4FFF 100%);
+            --gradient-secondary: linear-gradient(135deg, var(--secondary-color) 0%, #00CCFF 100%);
+            --box-shadow: 0 10px 30px rgba(46, 59, 255, 0.15);
+            --neon-glow: 0 0 10px rgba(0, 255, 204, 0.5), 0 0 20px rgba(0, 255, 204, 0.3), 0 0 30px rgba(0, 255, 204, 0.1);
+            --tech-dark-bg: linear-gradient(135deg, #050b1f 0%, #0a1a40 100%);
+            /* 新增变量 */
+            --grid-color: rgba(0, 255, 204, 0.1);
+            --grid-size: 30px;
+            --glow-spread: 10px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Montserrat', "PingFang SC", "Microsoft YaHei", sans-serif;
+        }
+
+        body {
+            background: var(--tech-dark-bg);
+            color: var(--text-color);
+            line-height: 1.6;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* 平滑滚动 */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* 视差基础样式 */
+        .parallax-bg {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .parallax-element {
+            position: absolute;
+            opacity: 0.15;
+            filter: blur(1px);
+            transition: all 0.5s ease;
+        }
+
+        /* 更新按钮样式 */
+        .btn,
+        .btn-outline {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.8rem 1.5rem;
+            border-radius: 30px;
+            font-weight: 600;
+            font-size: 1rem;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            cursor: pointer;
+            margin-right: 1rem;
+            position: relative;
+            overflow: hidden;
+            text-decoration: none;
+            background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+            color: white;
+            border: none;
+            box-shadow: 0 5px 15px rgba(32, 152, 255, 0.3);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: var(--secondary-color);
+            border: 2px solid var(--secondary-color);
+            box-shadow: 0 3px 10px rgba(0, 255, 204, 0.15);
+        }
+
+        .btn:hover,
+        .btn-outline:hover {
+            transform: translateY(-3px) scale(1.05);
+        }
+
+        .btn:hover {
+            box-shadow: 0 8px 25px rgba(32, 152, 255, 0.4);
+        }
+
+        .btn-outline:hover {
+            background: rgba(0, 255, 204, 0.1);
+            box-shadow: 0 5px 15px rgba(0, 255, 204, 0.3);
+        }
+
+        .btn::before,
+        .btn-outline::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.7s ease;
+        }
+
+        .btn:hover::before,
+        .btn-outline:hover::before {
+            left: 100%;
+        }
+
+        .arrow-right {
+            display: inline-block;
+            width: 16px;
+            height: 12px;
+            margin-left: 8px;
+            position: relative;
+            transition: transform 0.3s ease;
+        }
+
+        .arrow-right::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            width: 12px;
+            height: 2px;
+            background-color: var(--secondary-color);
+            transform: translateY(-50%);
+        }
+
+        .arrow-right::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            right: 0;
+            width: 6px;
+            height: 6px;
+            border-top: 2px solid var(--secondary-color);
+            border-right: 2px solid var(--secondary-color);
+            transform: translateY(-50%) rotate(45deg);
+        }
+
+        .btn-outline:hover .arrow-right {
+            transform: translateX(5px);
+        }
+
+        /* 确保英雄部分按钮容器样式正确 */
+        .hero-btns {
+            display: flex;
+            align-items: center;
+            margin: 2rem 0;
+        }
+
+        @media (max-width: 768px) {
+            .hero-btns {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .btn,
+            .btn-outline {
+                margin-right: 0;
+                margin-bottom: 1rem;
+                width: 100%;
+            }
+        }
+
+        .btn-white {
+            background: white;
+            color: var(--primary-color);
+        }
+
+        .btn-white:hover {
+            color: white;
+        }
+
+        /* 更新章节标题样式 */
+        .section-title {
+            text-align: center;
+            margin-bottom: 4rem;
+            position: relative;
+        }
+
+        .section-title h2 {
+            font-size: 2.8rem;
+            font-weight: 700;
+            position: relative;
+            display: inline-block;
+            margin-bottom: 1.5rem;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 10px rgba(32, 152, 255, 0.5);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: white;
+            text-shadow: 0 0 15px rgba(0, 204, 255, 0.3);
+        }
+
+        .section-title h2::after {
+            content: "";
+            position: absolute;
+            width: 80px;
+            height: 4px;
+            background: var(--gradient-primary);
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-radius: 2px;
+        }
+
+        .section-title h2::before {
+            content: '';
+            position: absolute;
+            width: 40px;
+            height: 3px;
+            background: var(--secondary-color);
+            top: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            box-shadow: var(--neon-glow);
+        }
+
+        .section-title p {
+            font-size: 1.2rem;
+            color: var(--gray-color);
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        /* 添加科技感装饰元素 */
+        .tech-decor {
+            position: absolute;
+            opacity: 0.1;
+            z-index: -1;
+        }
+
+        .tech-circle {
+            border: 2px solid var(--primary-color);
+            border-radius: 50%;
+        }
+
+        .tech-dots {
+            background-image: radial-gradient(var(--primary-color) 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+
+        .tech-line {
+            width: 150px;
+            height: 1px;
+            background: var(--primary-color);
+            transform-origin: left center;
+        }
+
+        /* 更新容器样式 */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem 5%;
+            position: relative;
+            z-index: 2;
+            background-color: rgba(13, 20, 46, 0.5);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-radius: 12px;
+            border: 1px solid rgba(46, 59, 255, 0.1);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        section {
+            padding: 8rem 0;
+            position: relative;
+            z-index: 1;
+            overflow: hidden;
+            margin: 3rem 0;
+            background-color: transparent;
+            border: none;
+            box-shadow: none;
+        }
+
+        header {
+            background-color: rgba(18, 18, 40, 0.8);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(46, 59, 255, 0.1);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            transition: all 0.3s;
+        }
+
+        header.scrolled {
+            background-color: rgba(18, 18, 40, 0.95);
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 5%;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo img {
+            height: 40px;
+            margin-right: 1rem;
+        }
+
+        .logo-text {
+            font-size: 1.8rem;
+            font-weight: 700;
+            background: var(--gradient-secondary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 5px rgba(0, 255, 204, 0.3);
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+
+        nav ul li {
+            margin-left: 2rem;
+        }
+
+        nav ul li a {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s;
+            padding: 0.5rem 0;
+            position: relative;
+        }
+
+        nav ul li a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            background: var(--gradient-primary);
+            bottom: 0;
+            left: 0;
+            transition: width 0.3s;
+        }
+
+        nav ul li a:hover {
+            color: var(--secondary-color);
+            text-shadow: 0 0 8px rgba(0, 255, 204, 0.5);
+        }
+
+        nav ul li a:hover::after {
+            width: 100%;
+        }
+
+        .nav-btn {
+            background: var(--gradient-primary);
+            color: white !important;
+            padding: 0.5rem 1.5rem;
+            border-radius: 30px;
+        }
+
+        .nav-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(46, 59, 255, 0.3);
+        }
+
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+        }
+
+        .menu-toggle span {
+            width: 25px;
+            height: 3px;
+            background-color: var(--primary-color);
+            margin: 3px 0;
+            transition: all 0.3s;
+            border-radius: 2px;
+        }
+
+        .hero {
+            height: 100vh;
+            min-height: 700px;
+            display: flex;
+            align-items: center;
+            padding: 0;
+            margin-top: 0;
+            background: var(--tech-dark-bg);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            background: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxkZWZzPjxwYXR0ZXJuIGlkPSJncmlkIiB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHBhdHRlcm5Vbml0cz0idXNlclNwYWNlT25Vc2UiPjxwYXRoIGQ9Ik0gNDAgMCBMIDAgMCAwIDQwIiBmaWxsPSJub25lIiBzdHJva2U9InJnYmEoNDYsIDU5LCAyNTUsIDAuMSkiIHN0cm9rZS13aWR0aD0iMSIvPjwvcGF0dGVybj48L2RlZnM+PHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsbD0idXJsKCNncmlkKSIvPjwvc3ZnPg==');
+            opacity: 0.1;
+            z-index: -1;
+        }
+
+        .hero-content {
+            max-width: 1400px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            height: 100%;
+            padding: 8rem 0;
+        }
+
+        .hero-text {
+            flex: 1;
+            padding-right: 3rem;
+        }
+
+        .hero-badge {
+            display: inline-block;
+            background-color: rgba(0, 255, 204, 0.1);
+            color: var(--secondary-color);
+            font-weight: 600;
+            padding: 0.5rem 1.5rem;
+            border-radius: 50px;
+            margin-bottom: 1.5rem;
+            font-size: 0.9rem;
+        }
+
+        .hero-text h1 {
+            font-size: 4rem;
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+            color: white;
+            line-height: 1.2;
+            text-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+        }
+
+        .hero-text p {
+            font-size: 1.2rem;
+            margin-bottom: 2.5rem;
+            color: var(--gray-color);
+            max-width: 90%;
+        }
+
+        .highlight {
+            color: var(--primary-color);
+            position: relative;
+            z-index: 1;
+        }
+
+        .highlight::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 30%;
+            background-color: rgba(0, 255, 204, 0.3);
+            bottom: 0;
+            left: 0;
+            z-index: -1;
+        }
+
+        .hero-btns {
+            display: flex;
+            align-items: center;
+            margin-bottom: 3rem;
+        }
+
+        .btn-outline {
+            display: inline-flex;
+            align-items: center;
+            color: var(--primary-color);
+            font-weight: 600;
+            margin-left: 2rem;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+
+        .btn-outline:hover {
+            transform: translateX(5px);
+        }
+
+        .arrow-right {
+            display: inline-block;
+            width: 20px;
+            height: 2px;
+            margin-left: 10px;
+            position: relative;
+            transition: all 0.3s;
+        }
+
+        .arrow-right::after {
+            content: '';
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            border-top: 2px solid var(--primary-color);
+            border-right: 2px solid var(--primary-color);
+            right: 0;
+            top: -3px;
+            transform: rotate(45deg);
+        }
+
+        .hero-stats {
+            display: flex;
+            gap: 2.5rem;
+        }
+
+        .hero-stats .stat-item {
+            text-align: left;
+        }
+
+        .hero-stats .stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            line-height: 1;
+            margin-bottom: 0.3rem;
+        }
+
+        .hero-stats .stat-label {
+            font-size: 1rem;
+            color: var(--gray-color);
+        }
+
+        .hero-image {
+            flex: 1;
+            position: relative;
+        }
+
+        .image-wrapper {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .hero-image img {
+            max-width: 100%;
+            border-radius: 20px;
+            box-shadow: var(--box-shadow);
+            position: relative;
+            z-index: 2;
+        }
+
+        .image-dots {
+            position: absolute;
+            width: 150px;
+            height: 150px;
+            top: -20px;
+            right: -20px;
+            z-index: 1;
+        }
+
+        .image-circle {
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            bottom: -30px;
+            left: -30px;
+            z-index: 1;
+        }
+
+        .hero-wave {
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            width: 100%;
+            line-height: 0;
+        }
+
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .feature-card {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            padding: 2rem;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .feature-icon {
+            font-size: 2.5rem;
+            color: #ff5252;
+            margin-bottom: 1.5rem;
+        }
+
+        .feature-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .feature-card p {
+            color: #666;
+        }
+
+        .tech-section {
+            background: linear-gradient(180deg, rgba(13, 20, 46, 0.8) 0%, rgba(10, 15, 30, 0.95) 100%);
+            padding: 8rem 0;
+            position: relative;
+            overflow: hidden;
+            color: white;
+        }
+
+        .tech-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: radial-gradient(circle at 50% 50%, rgba(0, 255, 204, 0.15) 0%, transparent 70%);
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .tech-grid-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image:
+                linear-gradient(to right, rgba(0, 204, 255, 0.05) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(0, 204, 255, 0.05) 1px, transparent 1px);
+            background-size: 30px 30px;
+            z-index: 0;
+            pointer-events: none;
+            opacity: 0.4;
+            animation: gridMovement 20s linear infinite;
+        }
+
+        @keyframes gridMovement {
+            0% {
+                transform: translateY(0);
+            }
+
+            100% {
+                transform: translateY(30px);
+            }
+        }
+
+        .tech-showcase {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 3rem;
+            margin-top: 3rem;
+            align-items: flex-start;
+        }
+
+        @media (max-width: 992px) {
+            .tech-showcase {
+                flex-direction: column;
+                gap: 2rem;
+            }
+
+            .tech-viz,
+            .tech-info {
+                width: 100%;
+            }
+
+            .tech-tabs {
+                justify-content: center;
+                gap: 0.5rem;
+            }
+
+            .tech-tab {
+                padding: 0.5rem 0.8rem;
+                font-size: 0.8rem;
+            }
+
+            .tech-panel {
+                padding: 0.8rem;
+            }
+
+            .tech-stats-inline {
+                gap: 0.7rem;
+            }
+
+            .stat-inline-item {
+                padding: 0.6rem;
+            }
+
+            .stat-inline-number {
+                font-size: 1.1rem;
+            }
+
+            .stat-inline-label {
+                font-size: 0.7rem;
+            }
+        }
+
+        .tech-viz {
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .tech-viz-container {
+            position: relative;
+            width: 100%;
+            height: auto;
+            min-height: 350px;
+            background-color: rgba(13, 20, 46, 0.7);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3), 0 0 30px rgba(0, 255, 204, 0.2);
+            border: 2px solid rgba(0, 204, 255, 0.3);
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .tech-viz-container:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.4), 0 0 40px rgba(0, 255, 204, 0.4);
+            border-color: rgba(0, 255, 204, 0.6);
+        }
+
+        .tech-main-img {
+            width: 100%;
+            height: auto;
+            max-height: 100%;
+            object-fit: contain;
+            transition: all 0.5s ease;
+            filter: brightness(0.9) contrast(1.1);
+        }
+
+        .tech-nodes {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .node {
+            position: absolute;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 3;
+        }
+
+        .node:hover .node-dot {
+            transform: scale(1.5);
+            box-shadow: 0 0 20px rgba(0, 255, 204, 0.8);
+        }
+
+        .node:hover .node-label {
+            opacity: 1;
+            transform: translateY(0);
+            background: rgba(0, 255, 204, 0.2);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+
+        .node-dot {
+            width: 12px;
+            height: 12px;
+            background-color: var(--secondary-color);
+            border-radius: 50%;
+            box-shadow: 0 0 10px rgba(0, 255, 204, 0.5);
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .node-pulse {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 24px;
+            height: 24px;
+            background-color: rgba(0, 255, 204, 0.3);
+            border-radius: 50%;
+            z-index: -1;
+            animation: pulse 2s infinite;
+        }
+
+        .node-label {
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%) translateY(10px);
+            background-color: rgba(10, 15, 30, 0.8);
+            color: var(--secondary-color);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            white-space: nowrap;
+            opacity: 0.7;
+            margin-bottom: 10px;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 1px solid rgba(0, 255, 204, 0.2);
+            text-shadow: 0 0 5px rgba(0, 255, 204, 0.5);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .tech-floating-shapes {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .floating-shape {
+            position: absolute;
+            opacity: 0.3;
+            border: 1px solid rgba(0, 255, 204, 0.5);
+            animation: float 10s ease-in-out infinite;
+        }
+
+        .shape-1 {
+            width: 80px;
+            height: 80px;
+            border-radius: 8px;
+            bottom: 20%;
+            left: 10%;
+            animation-delay: 0s;
+            transform: rotate(45deg);
+            border-width: 2px;
+            border-color: rgba(0, 255, 204, 0.6);
+        }
+
+        .shape-2 {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            top: 20%;
+            right: 15%;
+            animation-delay: 1s;
+            border-width: 2px;
+            border-color: rgba(0, 204, 255, 0.6);
+        }
+
+        .shape-3 {
+            width: 40px;
+            height: 40px;
+            border-radius: 4px;
+            top: 30%;
+            left: 20%;
+            animation-delay: 2s;
+            transform: rotate(30deg);
+            border-width: 2px;
+            border-color: rgba(0, 255, 153, 0.6);
+        }
+
+        .tech-info {
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .tech-tabs {
+            display: flex;
+            gap: 0.7rem;
+            flex-wrap: wrap;
+            margin-bottom: 1rem;
+        }
+
+        .tech-tab {
+            padding: 0.6rem 1rem;
+            background: rgba(10, 15, 30, 0.5);
+            border: 1px solid rgba(0, 204, 255, 0.1);
+            border-radius: 8px;
+            color: var(--gray-color);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .tech-tab:hover {
+            background: rgba(0, 204, 255, 0.1);
+            border-color: rgba(0, 204, 255, 0.3);
+            color: var(--secondary-color);
+            transform: translateY(-3px);
+        }
+
+        .tech-tab.active {
+            background: rgba(0, 204, 255, 0.15);
+            border-color: rgba(0, 204, 255, 0.5);
+            color: var(--secondary-color);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1), 0 0 10px rgba(0, 204, 255, 0.3);
+        }
+
+        .tech-content {
+            background: linear-gradient(135deg, rgba(12, 17, 35, 0.8) 0%, rgba(16, 23, 41, 0.9) 100%);
+            border-radius: 10px;
+            overflow: hidden;
+            padding: 1.5rem;
+            margin-top: 1rem;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2), 0 0 15px rgba(0, 255, 204, 0.1);
+            border: 1px solid rgba(0, 204, 255, 0.2);
+            height: 70%;
+            min-height: 250px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .tech-content::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at center, rgba(0, 255, 204, 0.1) 0%, transparent 60%);
+            opacity: 0.4;
+            z-index: -1;
+            animation: rotate 30s linear infinite;
+        }
+
+        @keyframes rotate {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        .tech-panel {
+            display: none;
+            animation: fadeIn 0.5s ease-in-out;
+            height: 100%;
+            padding: 1rem;
+            max-width: 100%;
+        }
+
+        .tech-panel.active {
+            display: block;
+        }
+
+        .tech-panel h3 {
+            color: white;
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            position: relative;
+            display: inline-block;
+        }
+
+        .tech-panel h3::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 30px;
+            height: 2px;
+            background: linear-gradient(90deg, rgba(0, 204, 255, 0.7), rgba(0, 255, 204, 0.7));
+            border-radius: 2px;
+        }
+
+        .tech-panel p {
+            color: var(--gray-color);
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+            font-size: 0.9rem;
+        }
+
+        .tech-stats-inline {
+            display: flex;
+            gap: 1rem;
+            margin-top: auto;
+        }
+
+        .stat-inline-item {
+            text-align: center;
+            background: rgba(0, 255, 204, 0.1);
+            padding: 0.8rem;
+            border-radius: 8px;
+            flex: 1;
+            border: 1px solid rgba(0, 255, 204, 0.15);
+            transition: all 0.3s ease;
+        }
+
+        .stat-inline-item:hover {
+            transform: translateY(-3px);
+            background: rgba(0, 255, 204, 0.15);
+            border-color: rgba(0, 255, 204, 0.3);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1), 0 0 10px rgba(0, 255, 204, 0.2);
+        }
+
+        .stat-inline-number {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--secondary-color);
+            margin-bottom: 0.2rem;
+            text-shadow: 0 0 8px rgba(0, 255, 204, 0.7);
+        }
+
+        .stat-inline-label {
+            font-size: 0.75rem;
+            color: var(--gray-color);
+            font-weight: 500;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: translate(-50%, -50%) scale(1);
+                opacity: 0.7;
+            }
+
+            70% {
+                transform: translate(-50%, -50%) scale(2);
+                opacity: 0;
+            }
+
+            100% {
+                transform: translate(-50%, -50%) scale(1);
+                opacity: 0;
+            }
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(0) rotate(0deg);
+            }
+
+            50% {
+                transform: translateY(-20px) rotate(10deg);
+            }
+
+            100% {
+                transform: translateY(0) rotate(0deg);
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 992px) {
+            .tech-showcase {
+                flex-direction: column;
+                gap: 2rem;
+            }
+
+            .tech-tabs {
+                justify-content: center;
+                gap: 0.5rem;
+            }
+
+            .tech-tab {
+                padding: 0.5rem 0.8rem;
+                font-size: 0.8rem;
+            }
+
+            .tech-panel {
+                padding: 0.8rem;
+            }
+
+            .tech-stats-inline {
+                gap: 0.7rem;
+            }
+
+            .stat-inline-item {
+                padding: 0.6rem;
+            }
+
+            .stat-inline-number {
+                font-size: 1.1rem;
+            }
+
+            .stat-inline-label {
+                font-size: 0.7rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .tech-section {
+                padding: 5rem 0;
+            }
+
+            .tech-tab {
+                font-size: 0.8rem;
+                padding: 0.7rem 1.2rem;
+            }
+
+            .tech-content {
+                padding: 1.5rem;
+            }
+
+            .tech-panel h3 {
+                font-size: 1.3rem;
+            }
+
+            .stat-inline-number {
+                font-size: 1.3rem;
+            }
+
+            .node-dot {
+                width: 10px;
+                height: 10px;
+            }
+
+            .node-pulse {
+                width: 20px;
+                height: 20px;
+            }
+
+            .node-label {
+                font-size: 0.75rem;
+                padding: 0.4rem 0.8rem;
+            }
+        }
+
+        .database-section {
+            background-color: white;
+            padding: 8rem 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .database-showcase {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4rem;
+            margin-top: 4rem;
+        }
+
+        .db-content {
+            flex: 1;
+            min-width: 300px;
+            color: var(--text-color);
+        }
+
+        .db-intro {
+            margin-bottom: 3rem;
+        }
+
+        .db-intro h3 {
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            color: white;
+        }
+
+        .highlight-text {
+            color: var(--primary-color);
+            position: relative;
+            z-index: 1;
+        }
+
+        .highlight-text::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 30%;
+            bottom: 0;
+            left: 0;
+            z-index: -1;
+        }
+
+        .db-intro p {
+            color: var(--gray-color);
+            line-height: 1.7;
+            margin-bottom: 1.5rem;
+        }
+
+        .db-features {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .db-feature-item {
+            display: flex;
+            align-items: center;
+            background-color: rgba(46, 59, 255, 0.05);
+            padding: 0.8rem 1.5rem;
+            border-radius: 50px;
+            transition: all 0.3s;
+        }
+
+        .db-feature-item:hover {
+            background-color: rgba(46, 59, 255, 0.1);
+            transform: translateY(-3px);
+        }
+
+        .feature-icon-small {
+            color: var(--primary-color);
+            margin-right: 0.8rem;
+        }
+
+        .db-stats-container {
+            margin-top: 3rem;
+        }
+
+        .db-stats-wrapper {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .db-stat-card {
+            background-color: rgba(18, 25, 50, 0.7);
+            border-radius: 10px;
+            padding: 1.5rem;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            position: relative;
+            transition: all 0.3s;
+            min-height: 130px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .db-stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+        }
+
+        .db-stat-value {
+            font-size: 2.2rem;
+            font-weight: 700;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            line-height: 1.2;
+            margin-bottom: 0.5rem;
+            width: 100%;
+            text-align: center;
+            overflow: visible;
+        }
+
+        /* 百万级数字的特殊样式 */
+        .big-number .db-stat-value {
+            font-size: 2rem;
+        }
+
+        @media (max-width: 768px) {
+            .db-stat-value {
+                font-size: 1.8rem;
+            }
+
+            .big-number .db-stat-value {
+                font-size: 1.6rem;
+            }
+        }
+
+        .db-stat-label {
+            color: var(--gray-color);
+            font-size: 1rem;
+        }
+
+        .db-stat-icon {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            color: rgba(46, 59, 255, 0.1);
+        }
+
+        .db-visual {
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .db-carousel {
+            background-color: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
+        }
+
+        .carousel-inner {
+            position: relative;
+            width: 100%;
+            height: 350px;
+        }
+
+        .carousel-item {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .carousel-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .carousel-item.active {
+            opacity: 1;
+            z-index: 1;
+        }
+
+        .carousel-caption {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.7), transparent);
+            color: white;
+            padding: 1.5rem;
+        }
+
+        .carousel-caption h4 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .carousel-controls {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1rem;
+            background-color: white;
+        }
+
+        .carousel-control {
+            background: none;
+            border: none;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            cursor: pointer;
+            color: var(--primary-color);
+            transition: all 0.3s;
+        }
+
+        .carousel-control:hover {
+            background-color: rgba(46, 59, 255, 0.1);
+        }
+
+        .carousel-indicators {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .indicator {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background-color: #ddd;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .indicator.active {
+            background-color: var(--primary-color);
+            transform: scale(1.2);
+        }
+
+        .search-demo {
+            background-color: white;
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .search-header {
+            margin-bottom: 1.5rem;
+        }
+
+        .search-header h4 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            color: var(--primary-color);
+        }
+
+        .search-header p {
+            color: var(--gray-color);
+        }
+
+        .search-bar {
+            display: flex;
+            margin-bottom: 1.5rem;
+        }
+
+        .search-bar input {
+            flex: 1;
+            padding: 1rem 1.5rem;
+            border: 1px solid #eee;
+            border-radius: 50px 0 0 50px;
+            font-size: 1rem;
+            outline: none;
+            transition: all 0.3s;
+        }
+
+        .search-bar input:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(46, 59, 255, 0.1);
+        }
+
+        .search-btn {
+            background: var(--gradient-primary);
+            color: white;
+            border: none;
+            border-radius: 0 50px 50px 0;
+            padding: 0 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .search-btn:hover {
+            opacity: 0.9;
+        }
+
+        .search-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.8rem;
+        }
+
+        .search-tag {
+            background-color: rgba(46, 59, 255, 0.05);
+            color: var(--primary-color);
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .search-tag:hover {
+            background-color: rgba(46, 59, 255, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .wave-bottom {
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            width: 100%;
+            line-height: 0;
+        }
+
+        .tech-bg-element {
+            position: absolute;
+            z-index: -1;
+            opacity: 0.05;
+        }
+
+        .tech-circuit {
+            background-image: url('images/circuit-pattern.svg');
+            background-size: contain;
+            width: 500px;
+            height: 500px;
+            right: -200px;
+            top: -100px;
+        }
+
+        .tech-grid {
+            background-image:
+                linear-gradient(rgba(46, 59, 255, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(46, 59, 255, 0.1) 1px, transparent 1px);
+            background-size: 30px 30px;
+            width: 100%;
+            height: 100%;
+            opacity: 0.05;
+        }
+
+        footer {
+            background-color: #1a1a1a;
+            color: #f5f5f5;
+            padding: 60px 0 20px;
+            margin-top: 80px;
+        }
+
+        .footer-content {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .footer-col {
+            flex: 1;
+            min-width: 250px;
+            margin-bottom: 30px;
+            padding-right: 20px;
+        }
+
+        .footer-logo {
+            display: flex;
+            align-items: center;
+        }
+
+        .footer-logo img {
+            height: 40px;
+            margin-right: 10px;
+        }
+
+        .footer-logo-text {
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .footer-col h3 {
+            margin-bottom: 20px;
+            position: relative;
+            padding-bottom: 10px;
+            font-size: 1.2rem;
+        }
+
+        .footer-col h3:after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 40px;
+            height: 2px;
+            background-color: #8e44ad;
+        }
+
+        .footer-col ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .footer-col ul li {
+            margin-bottom: 10px;
+        }
+
+        .footer-col a {
+            color: #ccc;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-col a:hover {
+            color: #8e44ad;
+        }
+
+        .social-icons a {
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        .social-icons i {
+            margin-right: 8px;
+            font-size: 1.1rem;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            border-top: 1px solid #333;
+            padding-top: 20px;
+            margin-top: 20px;
+            font-size: 0.9rem;
+        }
+
+        .footer-bottom a {
+            color: #ccc;
+            text-decoration: none;
+        }
+
+        .footer-bottom a:hover {
+            color: #8e44ad;
+        }
+
+        @media (max-width: 768px) {
+            .footer-content {
+                flex-direction: column;
+            }
+
+            .footer-col {
+                width: 100%;
+                padding-right: 0;
+            }
+        }
+
+        .cta-section {
+            position: relative;
+            background-image: url('images/dance-background.jpg');
+            /* 替换为您的背景图片 */
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            color: #fff;
+            padding: 100px 0;
+            text-align: center;
+            margin: 80px 0 0;
+            overflow: hidden;
+        }
+
+        .cta-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(142, 68, 173, 0.9), rgba(41, 128, 185, 0.85));
+            z-index: 1;
+        }
+
+        .cta-content {
+            position: relative;
+            z-index: 2;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .cta-section h2 {
+            font-size: 2.8rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .cta-section p {
+            font-size: 1.2rem;
+            margin-bottom: 40px;
+            line-height: 1.6;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+        }
+
+        .cta-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 15px 30px;
+            font-size: 1rem;
+            font-weight: 600;
+            text-align: center;
+            text-decoration: none;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+            color: white;
+            border: none;
+            box-shadow: 0 5px 15px rgba(32, 152, 255, 0.3);
+        }
+
+        .btn-white {
+            background-color: #fff;
+            color: #8e44ad;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-white:hover {
+            background-color: #f8f8f8;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            color: #fff;
+            border: 2px solid #fff;
+        }
+
+        .btn-outline:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+        }
+
+        @media (max-width: 768px) {
+            .cta-section {
+                padding: 70px 0;
+            }
+
+            .cta-section h2 {
+                font-size: 2.2rem;
+            }
+
+            .cta-section p {
+                font-size: 1rem;
+            }
+
+            .btn {
+                padding: 12px 25px;
+            }
+
+            .cta-buttons {
+                flex-direction: column;
+                align-items: center;
+                gap: 15px;
+            }
+        }
+
+        /* 紧凑型技术特性网格布局 */
+        .features-compact-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.2rem;
+            margin-top: 2rem;
+        }
+
+        .feature-card.compact {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            padding: 1.2rem;
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            border-left: 4px solid var(--primary-color);
+        }
+
+        .feature-card.compact:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .feature-card.compact .card-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.8rem;
+        }
+
+        .feature-card.compact .card-icon {
+            font-size: 1.5rem;
+            margin-right: 1rem;
+            background: var(--light-bg);
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .feature-card.compact h3 {
+            margin: 0;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+
+        .feature-card.compact p {
+            margin: 0 0 auto 0;
+            font-size: 0.95rem;
+            line-height: 1.5;
+            color: var(--text-muted);
+        }
+
+        .feature-card.compact .card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 1rem;
+            padding-top: 0.8rem;
+            border-top: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .feature-tag {
+            background: var(--primary-light);
+            color: var(--primary-dark);
+            font-size: 0.75rem;
+            padding: 0.25rem 0.6rem;
+            border-radius: 20px;
+            font-weight: 500;
+        }
+
+        .details-btn {
+            background: none;
+            border: none;
+            color: var(--primary-color);
+            cursor: pointer;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.2s;
+        }
+
+        .details-btn:hover {
+            background: rgba(0, 0, 0, 0.05);
+        }
+
+        .info-icon::before {
+            content: "i";
+            font-style: italic;
+            font-weight: bold;
+            font-family: serif;
+        }
+
+        @media (max-width: 768px) {
+            .features-compact-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* 核心优势部分样式 */
+        .advantages-section {
+            padding: 4rem 0;
+            background-color: #f9f9f9;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .advantages-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2.5rem;
+        }
+
+        .advantage-card {
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            overflow: hidden;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .advantage-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .advantage-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, #ff5252, #ff9190);
+        }
+
+        .advantage-icon {
+            font-size: 2rem;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: rgba(255, 82, 82, 0.1);
+            border-radius: 12px;
+            margin: 1.5rem;
+        }
+
+        .advantage-content {
+            padding: 0 1.5rem 1.5rem;
+            flex-grow: 1;
+        }
+
+        .advantage-content h3 {
+            font-size: 1.4rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: #333;
+        }
+
+        .advantage-content p {
+            color: #666;
+            line-height: 1.6;
+            font-size: 0.95rem;
+        }
+
+        @media (max-width: 768px) {
+            .advantages-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .advantage-card {
+                margin-bottom: 1rem;
+            }
+        }
+
+        /* 核心壁垒部分样式 */
+        .barrier-section {
+            background: linear-gradient(180deg, rgba(13, 20, 46, 0.7) 0%, rgba(10, 15, 30, 0.9) 100%);
+            padding: 6rem 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .barrier-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: radial-gradient(circle at 50% 50%, rgba(0, 255, 204, 0.1) 0%, transparent 70%);
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .barriers-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .barrier-card {
+            background: rgba(10, 15, 30, 0.7);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border-radius: 15px;
+            border: 1px solid rgba(0, 204, 255, 0.15);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+            padding: 0;
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            overflow: hidden;
+            position: relative;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .barrier-card:hover {
+            transform: translateY(-10px);
+            border-color: rgba(0, 255, 204, 0.3);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3), 0 0 25px rgba(0, 255, 204, 0.2);
+        }
+
+        .barrier-icon {
+            position: absolute;
+            top: 1.5rem;
+            right: 1.5rem;
+            font-size: 2rem;
+            opacity: 0.5;
+            z-index: 1;
+            color: var(--secondary-color);
+            filter: drop-shadow(0 0 10px rgba(0, 255, 204, 0.5));
+            transition: all 0.4s ease;
+        }
+
+        .barrier-card:hover .barrier-icon {
+            transform: scale(1.2);
+            opacity: 0.7;
+        }
+
+        .barrier-card h3 {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: white;
+            background: linear-gradient(135deg, rgba(18, 25, 50, 0.95), rgba(13, 20, 46, 0.8));
+            padding: 1.5rem;
+            margin: 0;
+            border-top: 1px solid rgba(0, 204, 255, 0.15);
+            border-radius: 15px 15px 0 0;
+            text-shadow: 0 0 10px rgba(0, 255, 204, 0.3);
+            position: relative;
+        }
+
+        .barrier-card h3::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 40px;
+            height: 2px;
+            background: linear-gradient(90deg, rgba(0, 204, 255, 0.3), rgba(0, 255, 204, 0.5));
+            border-radius: 2px;
+        }
+
+        .barrier-content {
+            padding: 1.8rem;
+            flex-grow: 1;
+            position: relative;
+            z-index: 1;
+        }
+
+        .barrier-content p {
+            color: var(--gray-color);
+            line-height: 1.7;
+            margin-bottom: 1.2rem;
+            font-size: 0.95rem;
+        }
+
+        .barrier-content p:last-child {
+            margin-bottom: 0;
+        }
+
+        /* 添加扫描线效果 */
+        .barrier-card .scanner {
+            position: absolute;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--secondary-color), transparent);
+            z-index: 2;
+            opacity: 0.7;
+            animation: scanningEffect 4s linear infinite;
+            pointer-events: none;
+        }
+
+        /* 添加卡片标签 */
+        .barrier-card::before {
+            content: attr(data-number);
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            background: rgba(0, 255, 204, 0.15);
+            color: var(--secondary-color);
+            padding: 0.3rem 0.8rem;
+            font-weight: 600;
+            font-size: 0.9rem;
+            border-radius: 20px;
+            z-index: 2;
+            box-shadow: 0 0 15px rgba(0, 255, 204, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .barrier-card:hover::before {
+            background: rgba(0, 255, 204, 0.25);
+            box-shadow: 0 0 20px rgba(0, 255, 204, 0.4);
+        }
+
+        /* 添加数字标记 */
+        .barriers-grid .barrier-card:nth-child(1)::before {
+            content: "01";
+        }
+
+        .barriers-grid .barrier-card:nth-child(2)::before {
+            content: "02";
+        }
+
+        .barriers-grid .barrier-card:nth-child(3)::before {
+            content: "03";
+        }
+
+        .barriers-grid .barrier-card:nth-child(4)::before {
+            content: "04";
+        }
+
+        /* 添加发光边框效果 */
+        .barrier-card::after {
+            content: '';
+            position: absolute;
+            top: -1px;
+            left: -1px;
+            right: -1px;
+            bottom: -1px;
+            background: linear-gradient(45deg, rgba(0, 204, 255, 0.1), rgba(0, 255, 204, 0.1));
+            border-radius: 15px;
+            z-index: -1;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .barrier-card:hover::after {
+            opacity: 1;
+        }
+
+        @media (max-width: 768px) {
+            .barriers-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .barrier-section {
+                padding: 4rem 0;
+            }
+
+            .barrier-card h3 {
+                font-size: 1.2rem;
+                padding: 1.3rem;
+            }
+
+            .barrier-content {
+                padding: 1.5rem;
+            }
+
+            .barrier-icon {
+                font-size: 1.7rem;
+                top: 1.3rem;
+                right: 1.3rem;
+            }
+        }
+
+        @keyframes scanningEffect {
+            0% {
+                top: 0;
+                opacity: 0;
+            }
+
+            5% {
+                opacity: 0.5;
+            }
+
+            50% {
+                opacity: 0.5;
+            }
+
+            95% {
+                opacity: 0.5;
+            }
+
+            100% {
+                top: 100%;
+                opacity: 0;
+            }
+        }
+
+        .users {
+            background-color: #f4f7fc;
+            padding: 5rem 5%;
+        }
+
+        .users-cards {
+            display: flex;
+            justify-content: space-between;
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .user-card {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            padding: 2rem;
+            transition: all 0.3s ease;
+            flex: 1;
+            text-align: center;
+        }
+
+        .user-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .user-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: var(--primary-color);
+        }
+
+        .user-card h3 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .user-card p {
+            color: var(--gray-color);
+            line-height: 1.6;
+        }
+
+        .service-section {
+            background: linear-gradient(135deg, #fff 0%, #f4f7fc 100%);
+            padding: 5rem 5%;
+        }
+
+        .service-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .service-card {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            padding: 2rem;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .service-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .service-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: var(--primary-color);
+        }
+
+        .service-card h3 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .service-card p {
+            color: var(--gray-color);
+            line-height: 1.6;
+        }
+
+        .cta-section {
+            position: relative;
+            background-image: url('images/dance-background.jpg');
+            /* 替换为您的背景图片 */
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            color: #fff;
+            padding: 100px 0;
+            text-align: center;
+            margin: 80px 0 0;
+            overflow: hidden;
+        }
+
+        .cta-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(142, 68, 173, 0.9), rgba(41, 128, 185, 0.85));
+            z-index: 1;
+        }
+
+        .cta-content {
+            position: relative;
+            z-index: 2;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .cta-section h2 {
+            font-size: 2.8rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .cta-section p {
+            font-size: 1.2rem;
+            margin-bottom: 40px;
+            line-height: 1.6;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+        }
+
+        .cta-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 15px 30px;
+            font-size: 1rem;
+            font-weight: 600;
+            text-align: center;
+            text-decoration: none;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+            color: white;
+            border: none;
+            box-shadow: 0 5px 15px rgba(32, 152, 255, 0.3);
+        }
+
+        .btn-white {
+            background-color: #fff;
+            color: #8e44ad;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-white:hover {
+            background-color: #f8f8f8;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            color: #fff;
+            border: 2px solid #fff;
+        }
+
+        .btn-outline:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+        }
+
+        @media (max-width: 768px) {
+            .cta-section {
+                padding: 70px 0;
+            }
+
+            .cta-section h2 {
+                font-size: 2.2rem;
+            }
+
+            .cta-section p {
+                font-size: 1rem;
+            }
+
+            .btn {
+                padding: 12px 25px;
+            }
+
+            .cta-buttons {
+                flex-direction: column;
+                align-items: center;
+                gap: 15px;
+            }
+        }
+
+        /* 添加粒子背景样式 */
+        #particles-js {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        /* 避免覆盖原有的背景色，改用叠加效果 */
+        body {
+            position: relative;
+            /* 确保相对定位 */
+        }
+
+        /* 调整容器样式以适应现有布局 */
+        .container,
+        section {
+            position: relative;
+            z-index: 2;
+            /* 确保内容在粒子之上 */
+            background-color: rgba(255, 255, 255, 0.05);
+            /* 半透明背景 */
+            backdrop-filter: blur(5px);
+            border-radius: 8px;
+            box-shadow: 0 0 15px rgba(32, 152, 255, 0.15);
+            margin: 20px 0;
+            border: 1px solid rgba(32, 152, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .container:hover,
+        section:hover {
+            box-shadow: 0 0 20px rgba(32, 152, 255, 0.3);
+            transform: translateY(-3px);
+        }
+
+        /* 标题样式调整，保持与原有风格兼容 */
+        h1,
+        h2,
+        h3 {
+            position: relative;
+            display: inline-block;
+        }
+
+        h1::after,
+        h2::after,
+        h3::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, rgba(32, 152, 255, 0.7), transparent);
+        }
+
+        /* 增强科技感的新样式 */
+        /* 粒子背景容器 */
+        #particles-js {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        /* 更新按钮样式使其更具科技感 */
+        .btn {
+            position: relative;
+            overflow: hidden;
+            border: none;
+            box-shadow: 0 5px 15px rgba(0, 204, 255, 0.2);
+            transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+
+        .btn:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: all 0.6s;
+        }
+
+        .btn:hover:before {
+            left: 100%;
+        }
+
+        .btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 204, 255, 0.4);
+        }
+
+        /* 卡片悬停效果 */
+        .feature-card,
+        .advantage-card,
+        .barrier-card,
+        .tech-panel,
+        .db-stat-card {
+            transition: all 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+            border: 1px solid rgba(0, 204, 255, 0.1);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+
+        .feature-card:hover,
+        .advantage-card:hover,
+        .barrier-card:hover,
+        .tech-panel:hover,
+        .db-stat-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 15px 30px rgba(0, 204, 255, 0.2);
+            border-color: rgba(0, 204, 255, 0.3);
+        }
+
+        /* 添加发光边框效果 */
+        .glow-border {
+            position: relative;
+        }
+
+        .glow-border:after {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, #2E3BFF, #00FFCC, #FF3366, #2E3BFF);
+            background-size: 400% 400%;
+            z-index: -1;
+            filter: blur(10px);
+            opacity: 0;
+            transition: opacity 0.3s;
+            border-radius: inherit;
+            animation: glowingBorder 6s ease-in-out infinite;
+        }
+
+        .glow-border:hover:after {
+            opacity: 0.7;
+        }
+
+        @keyframes glowingBorder {
+            0% {
+                background-position: 0% 50%
+            }
+
+            50% {
+                background-position: 100% 50%
+            }
+
+            100% {
+                background-position: 0% 50%
+            }
+        }
+
+        /* 技术节点动画增强 */
+        .node {
+            position: absolute;
+            cursor: pointer;
+            transition: all 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+
+        .node:hover {
+            transform: scale(1.2);
+        }
+
+        .node-dot {
+            width: 12px;
+            height: 12px;
+            background-color: var(--secondary-color);
+            border-radius: 50%;
+            position: relative;
+            z-index: 2;
+            box-shadow: 0 0 10px var(--secondary-color);
+        }
+
+        .node-pulse {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background-color: rgba(46, 59, 255, 0.3);
+            animation: pulse 2s infinite;
+            z-index: 1;
+        }
+
+        /* 扫描线效果 */
+        .scanner {
+            position: absolute;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--secondary-color), transparent);
+            z-index: 3;
+            opacity: 0.7;
+            top: 0;
+            animation: scanningEffect 4s linear infinite;
+        }
+
+        @keyframes scanningEffect {
+            0% {
+                top: 0;
+                opacity: 0;
+            }
+
+            5% {
+                opacity: 0.5;
+            }
+
+            50% {
+                opacity: 0.5;
+            }
+
+            95% {
+                opacity: 0.5;
+            }
+
+            100% {
+                top: 100%;
+                opacity: 0;
+            }
+        }
+
+        /* 为多个元素添加细微的悬浮动画 */
+        .floating {
+            animation: floating 6s ease-in-out infinite;
+        }
+
+        .floating-slow {
+            animation: floating 8s ease-in-out infinite;
+        }
+
+        .floating-fast {
+            animation: floating 4s ease-in-out infinite;
+        }
+
+        @keyframes floating {
+            0% {
+                transform: translateY(0px);
+            }
+
+            50% {
+                transform: translateY(-15px);
+            }
+
+            100% {
+                transform: translateY(0px);
+            }
+        }
+
+        /* 更新滚动条样式 */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(5, 11, 31, 0.7);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(to bottom, var(--primary-color), var(--secondary-color));
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(to bottom, var(--secondary-color), var(--primary-color));
+        }
+
+        /* 增强页面整体背景效果 */
+        body {
+            background: var(--tech-dark-bg);
+            color: #e0e0ff;
+            line-height: 1.6;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* 代码风格化 */
+        .tech-code {
+            font-family: "Consolas", "Monaco", monospace;
+            background-color: rgba(5, 11, 31, 0.5);
+            color: #e0e0ff;
+            padding: 15px;
+            border-radius: 5px;
+            border-left: 3px solid var(--secondary-color);
+            overflow-x: auto;
+            margin: 20px 0;
+            position: relative;
+        }
+
+        .tech-code:before {
+            content: "<>";
+            position: absolute;
+            top: 5px;
+            right: 10px;
+            color: var(--secondary-color);
+            opacity: 0.5;
+            font-size: 14px;
+        }
+
+        /* 导航菜单悬停效果 */
+        nav ul li a:after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--gradient-secondary);
+            transition: width 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+
+        nav ul li a:hover:after {
+            width: 100%;
+        }
+
+        /* 添加更好的视差背景效果 */
+        .parallax-bg {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .parallax-element {
+            position: absolute;
+            opacity: 0.15;
+            filter: blur(2px);
+            transition: all 0.5s ease;
+        }
+
+        /* 增强hero区域视觉效果 */
+        .hero {
+            background: var(--tech-dark-bg);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero:before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            background-image:
+                radial-gradient(circle at 10% 20%, rgba(0, 255, 204, 0.05) 0%, transparent 30%),
+                radial-gradient(circle at 90% 80%, rgba(46, 59, 255, 0.05) 0%, transparent 30%),
+                linear-gradient(rgba(46, 59, 255, 0.01) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(46, 59, 255, 0.01) 1px, transparent 1px);
+            background-size: 100% 100%, 100% 100%, 30px 30px, 30px 30px;
+            background-position: 0 0, 0 0, center center, center center;
+            z-index: -1;
+        }
+
+        /* 给标题添加网格背景 */
+        .section-title {
+            position: relative;
+            z-index: 1;
+        }
+
+        .section-title:before {
+            content: '';
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-image:
+                radial-gradient(circle, rgba(0, 255, 204, 0.1) 0%, transparent 70%);
+            z-index: -1;
+            border-radius: 50%;
+            opacity: 0.6;
+        }
+
+        /* 优化section背景 */
+        section {
+            position: relative;
+            z-index: 1;
+            overflow: hidden;
+        }
+
+        section:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSJub25lIiBzdHJva2U9InJnYmEoNDYsIDU5LCAyNTUsIDAuMDMpIiB4PSIwIiB5PSIwIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgLz48L3N2Zz4=');
+            background-size: 30px 30px;
+            opacity: 0.3;
+            z-index: -1;
+        }
+
+        /* 全局样式修复 */
+        body {
+            background: var(--tech-dark-bg) !important;
+            color: var(--text-color) !important;
+        }
+
+        /* 确保容器背景透明 */
+        .container,
+        section {
+            background-color: transparent !important;
+            box-shadow: none !important;
+            border: none !important;
+            margin: 0 auto !important;
+        }
+
+        /* 专门为各部分设置容器样式 */
+        .hero .container,
+        #features .container,
+        #technology .container,
+        #database .container,
+        #advantages .container,
+        .barrier-section .container,
+        #users .container,
+        .service-section .container,
+        #contact .container {
+            background-color: rgba(13, 20, 46, 0.7) !important;
+            backdrop-filter: blur(10px) !important;
+            -webkit-backdrop-filter: blur(10px) !important;
+            border-radius: 12px !important;
+            border: 1px solid rgba(46, 59, 255, 0.1) !important;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2) !important;
+            padding: 2rem 5% !important;
+            margin: 0 auto !important;
+        }
+
+        /* 强制设置卡片背景 */
+        .feature-card,
+        .advantage-card,
+        .barrier-card,
+        .tech-panel,
+        .db-stat-card,
+        .search-demo,
+        .db-carousel,
+        .user-card,
+        .service-card {
+            background-color: rgba(18, 25, 50, 0.7) !important;
+            backdrop-filter: blur(10px) !important;
+            -webkit-backdrop-filter: blur(10px) !important;
+            border: 1px solid rgba(0, 204, 255, 0.15) !important;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2) !important;
+        }
+
+        /* 强制设置卡片文本颜色 */
+        .feature-card h3,
+        .advantage-card h3,
+        .barrier-card h3,
+        .user-card h3,
+        .service-card h3,
+        .db-intro h3,
+        .search-header h4,
+        .barrier-card h3 {
+            color: var(--secondary-color) !important;
+        }
+
+        .feature-card p,
+        .advantage-card p,
+        .barrier-card p,
+        .user-card p,
+        .service-card p,
+        .search-header p,
+        .db-feature-item,
+        .db-intro p,
+        .tech-summary p {
+            color: var(--gray-color) !important;
+        }
+
+        /* 修复hero部分颜色 */
+        .hero-text h1 {
+            color: white !important;
+            text-shadow: 0 0 20px rgba(0, 0, 0, 0.5) !important;
+        }
+
+        .hero-text p {
+            color: var(--gray-color) !important;
+        }
+
+        .hero-badge {
+            background-color: rgba(0, 255, 204, 0.1) !important;
+            color: var(--secondary-color) !important;
+        }
+
+        /* 修复glow-border效果 */
+        .glow-border:after {
+            z-index: -1 !important;
+        }
+
+        /* 确保section标题正确显示 */
+        .section-title h2 {
+            color: white !important;
+            text-shadow: 0 0 15px rgba(0, 204, 255, 0.3) !important;
+        }
+
+        .section-title p {
+            color: var(--gray-color) !important;
+        }
+
+        /* 修复节点样式 */
+        .node-label {
+            padding: 5px 12px !important;
+            border-radius: 15px !important;
+            font-size: 0.8rem !important;
+        }
+
+        /* 修复扫描线效果 */
+        .scanner {
+            z-index: 10 !important;
+            opacity: 0.5 !important;
+        }
+
+        /* 为避免重叠背景问题，确保所有section:before被禁用 */
+        section:before {
+            display: none !important;
+        }
+
+        /* 确保加载正确的粒子效果位置 */
+        #particles-js {
+            z-index: 0 !important;
+        }
+
+        /* 改进footer样式 */
+        footer {
+            background-color: rgba(10, 15, 30, 0.9) !important;
+            backdrop-filter: blur(10px) !important;
+            border-top: 1px solid rgba(46, 59, 255, 0.1) !important;
+        }
+
+        .footer-col h3,
+        .footer-logo-text {
+            color: var(--secondary-color) !important;
+        }
+
+        .footer-col a,
+        .footer-col p,
+        .footer-bottom p {
+            color: var(--gray-color) !important;
+        }
+
+        .footer-col a:hover {
+            color: var(--secondary-color) !important;
+        }
+
+        /* 卡片样式优化 */
+        .feature-card,
+        .advantage-card,
+        .barrier-card {
+            position: relative;
+            padding: 25px;
+            margin-bottom: 30px;
+            border-radius: 10px;
+            background: rgba(10, 15, 30, 0.6);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(0, 255, 204, 0.1);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2),
+                inset 0 0 20px rgba(0, 255, 204, 0.05);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            overflow: hidden;
+        }
+
+        .feature-card:hover,
+        .advantage-card:hover,
+        .barrier-card:hover {
+            transform: translateY(-10px) scale(1.03);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3),
+                0 0 15px rgba(0, 255, 204, 0.2);
+            border-color: rgba(0, 255, 204, 0.3);
+        }
+
+        /* 卡片内部元素优化 */
+        .card-title {
+            color: var(--secondary-color);
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            font-weight: 600;
+            position: relative;
+            display: inline-block;
+        }
+
+        .card-title::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: -5px;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--secondary-color), transparent);
+            transition: width 0.5s ease;
+        }
+
+        .feature-card:hover .card-title::after,
+        .advantage-card:hover .card-title::after,
+        .barrier-card:hover .card-title::after {
+            width: 100%;
+        }
+
+        /* 进度条动画效果 */
+        .progress-container {
+            width: 100%;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 3px;
+            margin: 15px 0;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, var(--secondary-color), var(--accent-color));
+            border-radius: 3px;
+            width: 0;
+            transition: width 1.5s cubic-bezier(0.075, 0.82, 0.165, 1);
+            position: relative;
+        }
+
+        .progress-bar::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg,
+                    transparent,
+                    rgba(255, 255, 255, 0.3),
+                    transparent);
+            animation: progressGlow 2s infinite;
+        }
+
+        @keyframes progressGlow {
+            0% {
+                transform: translateX(-100%);
+            }
+
+            100% {
+                transform: translateX(100%);
+            }
+        }
+
+        /* 图标效果增强 */
+        .card-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: rgba(0, 255, 204, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 15px;
+            color: var(--secondary-color);
+            font-size: 24px;
+            transition: all 0.3s ease;
+        }
+
+        .card-icon-wrapper {
+            position: relative;
+            margin-bottom: 15px;
+            display: inline-block;
+        }
+
+        .card-icon-wrapper:after {
+            content: '';
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(0, 255, 204, 0.05);
+            top: 5px;
+            left: 5px;
+            z-index: -1;
+            transform: scale(0);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .feature-card:hover .card-icon-wrapper:after {
+            transform: scale(2.5);
+        }
+
+        .feature-card:hover .card-icon,
+        .advantage-card:hover .card-icon,
+        .barrier-card:hover .card-icon {
+            transform: rotate(360deg) scale(1.1);
+            background: rgba(0, 255, 204, 0.2);
+            box-shadow: 0 0 15px rgba(0, 255, 204, 0.3);
+        }
+
+        /* 服务部分样式增强 */
+        .service-section {
+            position: relative;
+            padding: 8rem 0;
+            overflow: hidden;
+            background: linear-gradient(180deg, rgba(13, 20, 46, 0.7) 0%, rgba(10, 15, 30, 0.9) 100%);
+        }
+
+        .service-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: radial-gradient(circle at 50% 50%, rgba(0, 255, 204, 0.15) 0%, transparent 70%);
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .service-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+            gap: 3rem;
+            margin-top: 4rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .service-panel {
+            position: relative;
+            background: rgba(10, 15, 30, 0.8);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border-radius: 20px;
+            border: 1px solid rgba(0, 204, 255, 0.2);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3), 0 0 20px rgba(0, 255, 204, 0.1);
+            overflow: hidden;
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            height: 100%;
+        }
+
+        .service-panel:hover {
+            transform: translateY(-10px);
+            border-color: rgba(0, 255, 204, 0.5);
+            box-shadow: 0 20px 45px rgba(0, 0, 0, 0.4), 0 0 30px rgba(0, 255, 204, 0.3);
+        }
+
+        .service-header {
+            position: relative;
+            padding: 2rem;
+            background: linear-gradient(135deg, rgba(18, 25, 50, 0.95), rgba(13, 20, 46, 0.8));
+            border-bottom: 1px solid rgba(0, 204, 255, 0.15);
+            overflow: hidden;
+            text-align: center;
+        }
+
+        .service-header h3 {
+            font-size: 2rem;
+            color: white !important;
+            text-align: center;
+            margin: 0;
+            font-weight: 700;
+            text-shadow: 0 0 15px rgba(0, 255, 204, 0.7);
+            background: linear-gradient(90deg, #ffffff, #00ffcc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: inline-block;
+        }
+
+        .service-header::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 50px;
+            height: 3px;
+            background: linear-gradient(90deg, rgba(0, 204, 255, 0.5), rgba(0, 255, 204, 0.8));
+            border-radius: 2px;
+        }
+
+        .service-content {
+            padding: 2.5rem 2rem;
+        }
+
+        .service-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .service-item {
+            position: relative;
+            padding: 1.2rem 0 1.2rem 3.5rem;
+            margin-bottom: 1rem;
+            border-bottom: 1px solid rgba(0, 204, 255, 0.1);
+            transition: all 0.4s ease;
+            border-radius: 8px;
+        }
+
+        .service-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+        }
+
+        .service-item:hover {
+            background: rgba(0, 255, 204, 0.08);
+            transform: translateX(8px);
+            padding-left: 4rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .service-item-icon {
+            position: absolute;
+            left: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 36px;
+            height: 36px;
+            background: rgba(0, 255, 204, 0.15);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--secondary-color);
+            font-weight: bold;
+            box-shadow: 0 0 15px rgba(0, 255, 204, 0.4);
+            transition: all 0.4s ease;
+        }
+
+        .service-item:hover .service-item-icon {
+            transform: translateY(-50%) scale(1.2);
+            background: rgba(0, 255, 204, 0.25);
+            box-shadow: 0 0 20px rgba(0, 255, 204, 0.6);
+        }
+
+        .service-item-title {
+            font-weight: 600;
+            color: white;
+            margin-bottom: 0.4rem;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+        }
+
+        .service-item:hover .service-item-title {
+            color: var(--secondary-color);
+        }
+
+        .service-item-desc {
+            font-size: 0.95rem;
+            color: var(--gray-color);
+            line-height: 1.5;
+        }
+
+        /* 扫描线效果 */
+        .service-panel .scanner {
+            position: absolute;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--secondary-color), transparent);
+            z-index: 2;
+            opacity: 0.7;
+            animation: scanningEffect 4s linear infinite;
+            pointer-events: none;
+        }
+
+        /* 浮动图标 */
+        .service-float-icon {
+            position: absolute;
+            right: 25px;
+            top: 25px;
+            font-size: 5rem;
+            opacity: 0.15;
+            color: var(--secondary-color);
+            animation: floating 6s ease-in-out infinite;
+            filter: drop-shadow(0 0 15px rgba(0, 255, 204, 0.5));
+            z-index: 1;
+        }
+
+        @media (max-width: 992px) {
+            .service-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .service-panel {
+                margin-bottom: 2rem;
+            }
+
+            .service-header h3 {
+                font-size: 1.8rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .service-section {
+                padding: 5rem 0;
+            }
+
+            .service-header {
+                padding: 1.5rem;
+            }
+
+            .service-content {
+                padding: 1.5rem;
+            }
+
+            .service-item {
+                padding: 1rem 0 1rem 3rem;
+            }
+
+            .service-float-icon {
+                font-size: 4rem;
+                top: 15px;
+                right: 15px;
+            }
+        }
+
+        @keyframes floating {
+            0% {
+                transform: translateY(0px);
+            }
+
+            50% {
+                transform: translateY(-15px);
+            }
+
+            100% {
+                transform: translateY(0px);
+            }
+        }
+
+        /* 更新英雄部分按钮的箭头图标样式 */
+        .hero-btns .btn-outline {
+            display: inline-flex;
+            align-items: center;
+            color: var(--secondary-color);
+        }
+
+        .hero-btns .arrow-right {
+            position: relative;
+            width: 20px;
+            height: 12px;
+            margin-left: 8px;
+        }
+
+        .hero-btns .arrow-right::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            width: 12px;
+            height: 2px;
+            background-color: var(--secondary-color);
+            transform: translateY(-50%);
+        }
+
+        .hero-btns .arrow-right::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            right: 0;
+            width: 6px;
+            height: 6px;
+            border-top: 2px solid var(--secondary-color);
+            border-right: 2px solid var(--secondary-color);
+            transform: translateY(-50%) rotate(45deg);
+        }
+
+        .hero-btns .btn-outline:hover .arrow-right {
+            transform: translateX(5px);
+        }
+
+        @media (max-width: 992px) {
+            .tech-viz-container {
+                min-height: 300px;
+            }
+
+            .tech-main-img {
+                max-height: 300px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .tech-viz-container {
+                min-height: 250px;
+            }
+
+            .tech-main-img {
+                max-height: 250px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .tech-viz-container {
+                min-height: 200px;
+            }
+
+            .tech-main-img {
+                max-height: 200px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 添加粒子背景容器 -->
+    <div id="particles-js"></div>
+
+    <header>
+        <!-- 添加扫描线效果 -->
+        <div class="scanner"></div>
+
+        <div class="navbar">
+            <div class="logo">
+                <img src="images/logo.png" alt="棱镜舞台Logo">
+                <div class="logo-text">棱镜舞台</div>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="#home">首页</a></li>
+                    <li><a href="#features">功能特点</a></li>
+                    <li><a href="#technology">核心技术</a></li>
+                    <li><a href="#database">舞蹈库</a></li>
+                    <li><a href="#advantages">核心优势</a></li>
+                    <li><a href="#users">用户群体</a></li>
+                    <li><a href="#contact" class="nav-btn">联系我们</a></li>
+                </ul>
+            </nav>
+            <div class="menu-toggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </header>
+
+    <section class="hero" id="home">
+        <div class="parallax-bg">
+            <div class="parallax-element tech-circle rellax" data-rellax-speed="-2"
+                style="width: 300px; height: 300px; top: 10%; left: 5%;"></div>
+            <div class="parallax-element tech-circle rellax" data-rellax-speed="-1"
+                style="width: 200px; height: 200px; bottom: 10%; right: 10%;"></div>
+            <div class="parallax-element tech-dots rellax" data-rellax-speed="-3"
+                style="width: 500px; height: 500px; top: 0; right: 0;"></div>
+            <div class="parallax-element tech-dots rellax" data-rellax-speed="-2"
+                style="width: 400px; height: 400px; bottom: 0; left: 0;"></div>
+
+            <!-- 添加扫描线效果 -->
+            <div class="scanner"></div>
+        </div>
+
+        <div class="container">
+            <div class="hero-content">
+                <div class="hero-text animate__animated animate__fadeInLeft">
+                    <div class="hero-badge">人工智能 · 舞蹈教育</div>
+                    <h1>棱镜舞台 <span class="highlight">AI舞蹈新"视"界</span></h1>
+                    <p>通过先进的动作捕捉技术与人工智能，赋能舞蹈教育，打破传统舞蹈教学"经验主义"束缚，实现科学化客观化评价。</p>
+                    <div class="hero-btns">
+                        <a href="#contact" class="btn">免费试用</a>
+                        <a href="#technology" class="btn-outline">了解技术 <span class="arrow-right"></span></a>
+                    </div>
+                    <div class="hero-stats">
+                        <div class="stat-item">
+                            <div class="stat-number">30%+</div>
+                            <div class="stat-label">准确率提升</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">13</div>
+                            <div class="stat-label">级考级标准</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">18万+</div>
+                            <div class="stat-label">舞蹈作品</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="hero-image animate__animated animate__fadeInRight">
+                    <div class="image-wrapper floating">
+                        <!-- 添加发光边框效果 -->
+                        <img src="images/动作捕捉.gif" alt="舞蹈动作捕捉演示" class="glow-border">
+                        <div class="image-dots tech-dots"></div>
+                        <div class="image-circle tech-circle"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </section>
+
+    <section id="features" class="features-section">
+        <div class="parallax-bg">
+            <div class="parallax-element tech-circle rellax" data-rellax-speed="-1"
+                style="width: 350px; height: 350px; top: 20%; right: -100px; opacity: 0.05;"></div>
+            <div class="parallax-element tech-dots rellax" data-rellax-speed="-2"
+                style="width: 500px; height: 500px; bottom: -200px; left: -200px; opacity: 0.05;"></div>
+            <div class="tech-bg-element tech-circuit"></div>
+            <div class="tech-bg-element tech-grid"></div>
+        </div>
+
+        <div class="container">
+            <div class="section-title">
+                <h2>AI驱动的舞蹈技术</h2>
+                <p>我们融合尖端人工智能与计算机视觉技术，实现舞蹈动作的精准捕捉与智能分析</p>
+            </div>
+
+            <div class="features-compact-grid">
+                <div class="feature-card compact" data-aos="fade-up" data-aos-delay="100">
+                    <div class="card-header">
+                        <div class="card-icon">📊</div>
+                        <h3>实时骨骼关键点捕捉</h3>
+                    </div>
+                    <p>基于OpenPose深度学习算法，精准识别人体25个关键骨骼节点，实现毫秒级动作捕捉与评估。</p>
+                    <div class="card-footer">
+                        <span class="feature-tag">精度高达99.2%</span>
+                        <button class="details-btn" data-toggle="tooltip" title="技术详情"><i
+                                class="info-icon"></i></button>
+                    </div>
+                </div>
+
+                <div class="feature-card compact" data-aos="fade-up" data-aos-delay="200">
+                    <div class="card-header">
+                        <div class="card-icon">🔍</div>
+                        <h3>AI动作评分系统</h3>
+                    </div>
+                    <p>多维度评分算法结合模糊逻辑，自动分析动作角度、力度、协调性和表现力，提供专业评估。</p>
+                    <div class="card-footer">
+                        <span class="feature-tag">评分一致性95%</span>
+                        <button class="details-btn" data-toggle="tooltip" title="技术详情"><i
+                                class="info-icon"></i></button>
+                    </div>
+                </div>
+
+                <div class="feature-card" data-aos="fade-up" data-aos-delay="300">
+                    <div class="card-icon-wrapper">
+                        <div class="card-icon">📱</div>
+                    </div>
+                    <h3>3D虚拟人教学</h3>
+                    <p>Transformer+LLM技术驱动的交互式3D虚拟教师，提供实时演示与个性化指导，突破时空限制。</p>
+                    <div class="card-hover">
+                        <div class="card-hover-content">
+                            <p>支持自然语言交互与多模态理解</p>
+                            <span class="learn-more">技术详情 <span class="arrow-icon"></span></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="feature-card" data-aos="fade-up" data-aos-delay="400">
+                    <div class="card-icon-wrapper">
+                        <div class="card-icon">📈</div>
+                    </div>
+                    <h3>深度学习数据分析</h3>
+                    <p>通过EfficientNet神经网络架构，实现舞蹈动作特征提取与性能预测，科学追踪学习进度。</p>
+                    <div class="card-hover">
+                        <div class="card-hover-content">
+                            <p>精简8倍参数量，加速6倍推理性能</p>
+                            <span class="learn-more">技术详情 <span class="arrow-icon"></span></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="feature-card" data-aos="fade-up" data-aos-delay="500">
+                    <div class="card-icon-wrapper">
+                        <div class="card-icon">👨‍🏫</div>
+                    </div>
+                    <h3>生成式AI编舞系统</h3>
+                    <p>基于RAG+GAN技术，分析舞蹈风格与音乐节奏，生成创意舞蹈编排并通过3D模型可视化展示。</p>
+                    <div class="card-hover">
+                        <div class="card-hover-content">
+                            <p>原创编舞评分超越人类平均水平</p>
+                            <span class="learn-more">技术详情 <span class="arrow-icon"></span></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="feature-card" data-aos="fade-up" data-aos-delay="600">
+                    <div class="card-icon-wrapper">
+                        <div class="card-icon">🎓</div>
+                    </div>
+                    <h3>考级评估与认证系统</h3>
+                    <p>基于RoBERTa多模态模型，融合舞蹈视觉与专业术语理解，实现自动化考级评估与能力认证。</p>
+                    <div class="card-hover">
+                        <div class="card-hover-content">
+                            <p>覆盖2万+专业舞蹈术语与标准</p>
+                            <span class="learn-more">技术详情 <span class="arrow-icon"></span></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="tech-section" id="technology">
+        <div class="parallax-bg">
+            <div class="parallax-element tech-dots rellax" data-rellax-speed="-2"
+                style="width: 400px; height: 400px; top: 10%; left: 5%; opacity: 0.05;"></div>
+            <div class="parallax-element tech-circle rellax" data-rellax-speed="-1"
+                style="width: 300px; height: 300px; bottom: 10%; right: 10%; opacity: 0.05;"></div>
+            <div class="tech-grid-bg"></div>
+
+            <!-- 添加扫描线效果 -->
+            <div class="scanner"></div>
+        </div>
+
+        <div class="container">
+            <div class="section-title">
+                <h2>尖端AI技术融合</h2>
+                <p>我们的技术团队利用先进的机器学习技术构建全方位舞蹈分析系统</p>
+            </div>
+
+            <div class="tech-showcase">
+                <div class="tech-viz">
+                    <div class="tech-viz-container glow-border">
+                        <!-- 增加扫描效果 -->
+                        <div class="scanner"></div>
+                        <img src="images/骨架节点.jpg" alt="先进动作捕捉技术" class="tech-main-img">
+                        <div class="tech-nodes">
+                            <div class="node node-1" data-tech="OpenPose">
+                                <div class="node-dot"></div>
+                                <div class="node-pulse"></div>
+                                <div class="node-label">OpenPose</div>
+                            </div>
+                            <div class="node node-2" data-tech="EfficientNet">
+                                <div class="node-dot"></div>
+                                <div class="node-pulse"></div>
+                                <div class="node-label">EfficientNet</div>
+                            </div>
+                            <div class="node node-3" data-tech="模糊算法">
+                                <div class="node-dot"></div>
+                                <div class="node-pulse"></div>
+                                <div class="node-label">模糊算法</div>
+                            </div>
+                            <div class="node node-4" data-tech="RoBERTa">
+                                <div class="node-dot"></div>
+                                <div class="node-pulse"></div>
+                                <div class="node-label">RoBERTa</div>
+                            </div>
+                            <div class="node node-5" data-tech="Transformer">
+                                <div class="node-dot"></div>
+                                <div class="node-pulse"></div>
+                                <div class="node-label">Transformer</div>
+                            </div>
+                            <div class="node node-6" data-tech="RAG+LLM">
+                                <div class="node-dot"></div>
+                                <div class="node-pulse"></div>
+                                <div class="node-label">RAG+LLM</div>
+                            </div>
+                        </div>
+                        <div class="tech-floating-shapes">
+                            <div class="floating-shape shape-1"></div>
+                            <div class="floating-shape shape-2"></div>
+                            <div class="floating-shape shape-3"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tech-info">
+                    <div class="tech-tabs">
+                        <div class="tech-tab active" data-tech="OpenPose">OpenPose</div>
+                        <div class="tech-tab" data-tech="EfficientNet">EfficientNet</div>
+                        <div class="tech-tab" data-tech="模糊算法">模糊算法</div>
+                        <div class="tech-tab" data-tech="RoBERTa">RoBERTa</div>
+                        <div class="tech-tab" data-tech="Transformer">Transformer</div>
+                        <div class="tech-tab" data-tech="RAG+LLM">RAG+LLM</div>
+                    </div>
+
+                    <div class="tech-content">
+                        <div class="tech-panel active" data-tech="OpenPose">
+                            <h3>精准人体骨骼关键点识别</h3>
+                            <p>OpenPose技术能够精确识别人体的25个关键骨骼节点，实现高精度的人体姿态估计。我们对原始算法进行了针对舞蹈动作的优化，提高了识别准确率和速度。</p>
+                            <div class="tech-stats-inline">
+                                <div class="stat-inline-item">
+                                    <div class="stat-inline-number">25+</div>
+                                    <div class="stat-inline-label">识别关键点</div>
+                                </div>
+                                <div class="stat-inline-item">
+                                    <div class="stat-inline-number">30ms</div>
+                                    <div class="stat-inline-label">识别速度</div>
+                                </div>
+                                <div class="stat-inline-item">
+                                    <div class="stat-inline-number">99.2%</div>
+                                    <div class="stat-inline-label">识别准确率</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="tech-panel" data-tech="EfficientNet">
+                            <h3>高效图像分类与特征提取</h3>
+                            <p>EfficientNet是一种高效的卷积神经网络架构，我们将其应用于舞蹈动作的分类和特征提取。通过优化网络参数，实现了更快的处理速度和更低的资源消耗。</p>
+                            <div class="tech-stats-inline">
+                                <div class="stat-inline-item">
+                                    <div class="stat-inline-number">8×</div>
+                                    <div class="stat-inline-label">减少参数量</div>
+                                </div>
+                                <div class="stat-inline-item">
+                                    <div class="stat-inline-number">6×</div>
+                                    <div class="stat-inline-label">加速推理</div>
+                                </div>
+                                <div class="stat-inline-item">
+                                    <div class="stat-inline-number">97.5%</div>
+                                    <div class="stat-inline-label">分类准确率</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="tech-panel" data-tech="模糊算法">
+                            <h3>优化动作评分精度</h3>
+                            <p>我们开发的多模态模糊算法能够处理舞蹈动作的不确定性和多样性，弱化了方向对评分的影响，使得评分更加公正和准确，同时考虑舞者的个人特点。</p>
+                            <div class="tech-stats-inline">
+                                <div class="stat-inline-item">
+                                    <div class="stat-inline-number">多维</div>
+                                    <div class="stat-inline-label">评分标准</div>
+                                </div>
+                                <div class="stat-inline-item">
+                                    <div class="stat-inline-number">±3°</div>
+                                    <div class="stat-inline-label">容错范围</div>
+                                </div>
+                                <div class="stat-inline-item">
+                                    <div class="stat-inline-number">95%</div>
+                                    <div class="stat-inline-label">专家一致性</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="tech-panel" data-tech="RoBERTa">
+                            <h3>融合图像与文本进行全面分析</h3>
+                            <p>RoBERTa模型实现了图像与文本的多模态融合，使系统能够理解舞蹈动作的语义信息，将专业舞蹈术语与视觉特征关联起来，实现更加全面的舞蹈分析。</p>
+                            <div class="tech-stats-inline">
+                                <div class="stat-inline-item">
+                                    <div class="stat-inline-number">2万+</div>
+                                    <div class="stat-inline-label">舞蹈术语</div>
+                                </div>
+                                <div class="stat-inline-item">
+                                    <div class="stat-inline-number">跨模态</div>
+                                    <div class="stat-inline-label">理解能力</div>
+                                </div>
+                                <div class="stat-inline-item">
+                                    <div class="stat-inline-number">自适应</div>
+                                    <div class="stat-inline-label">学习机制</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="tech-panel" data-tech="Transformer">
+                            <h3>预测捕捉动作节点</h3>
+                            <p>Transformer结合序列模型能够预测并捕捉舞蹈中的关键动作节点，理解舞蹈动作的时序关系，判断动作的流畅度和连贯性，提供更加准确的动作评估。</p>
+                            <div class="tech-stats-inline">
+                                <div class="stat-inline-item">
+                                    <div class="stat-inline-number">毫秒级</div>
+                                    <div class="stat-inline-label">预测速度</div>
+                                </div>
+                                <div class="stat-inline-item">
+                                    <div class="stat-inline-number">200ms</div>
+                                    <div class="stat-inline-label">提前预警</div>
+                                </div>
+                                <div class="stat-inline-item">
+                                    <div class="stat-inline-number">96.8%</div>
+                                    <div class="stat-inline-label">预测准确率</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="tech-panel" data-tech="RAG+LLM">
+                            <h3>实现即时准确的动作评分</h3>
+                            <p>结合检索增强生成(RAG)和大型语言模型(LLM)技术，系统能够实时分析舞蹈动作，给出专业的评分和改进建议，模拟专业舞蹈教师的指导方式。</p>
+                            <div class="tech-stats-inline">
+                                <div class="stat-inline-item">
+                                    <div class="stat-inline-number">实时</div>
+                                    <div class="stat-inline-label">反馈速度</div>
+                                </div>
+                                <div class="stat-inline-item">
+                                    <div class="stat-inline-number">个性化</div>
+                                    <div class="stat-inline-label">改进建议</div>
+                                </div>
+                                <div class="stat-inline-item">
+                                    <div class="stat-inline-number">92%</div>
+                                    <div class="stat-inline-label">用户接受度</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tech-summary">
+                <p>结合动画技术使舞蹈序列可视化，通过强化学习优化序列逻辑性，实现数字化专业教学与创新教育。我们的技术融合多种AI方法，创造出真正智能的舞蹈辅助系统。</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="database-section" id="database">
+        <div class="parallax-bg">
+            <div class="parallax-element tech-circle rellax" data-rellax-speed="-1"
+                style="width: 400px; height: 400px; top: -100px; right: -100px; opacity: 0.05;"></div>
+            <div class="parallax-element tech-dots rellax" data-rellax-speed="-2"
+                style="width: 300px; height: 300px; bottom: -100px; left: -100px; opacity: 0.05;"></div>
+        </div>
+
+        <div class="container">
+            <div class="section-title">
+                <h2>自研舞蹈动作数据库</h2>
+                <p>我们与北京舞蹈学院联合创建了中国最大的标准舞蹈动作数据库，为用户提供最权威的舞蹈参考资源</p>
+            </div>
+
+            <div class="database-showcase">
+                <div class="db-content">
+                    <div class="db-intro" data-aos="fade-right">
+                        <h3>海量<span class="highlight-text">专业级</span>舞蹈资源</h3>
+                        <p>我们的舞蹈数据库以官方考级视频为基础，覆盖从入门到进阶的13个等级，确保学习内容与官方考纲考点和考试规则完全同步。系统精心分类，将视频等级细分为入门、初级、中级、高级和进阶五层，以适应不同水平学习者的需求。
+                        </p>
+
+                        <p>数据库配备Elasticsearch联网搜索引擎，内置可视化知识图谱，帮助用户迅速查询所需信息，极大地提高了学习效率。同时，个性化用户数据库为每位用户提供定制化的学习体验和成长记录。
+                        </p>
+
+                        <div class="db-features">
+                            <div class="db-feature-item">
+                                <div class="feature-icon-small">
+                                    <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor"
+                                        stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                        <polyline points="7 10 12 15 17 10"></polyline>
+                                        <line x1="12" y1="15" x2="12" y2="3"></line>
+                                    </svg>
+                                </div>
+                                <span>官方授权教学资源</span>
+                            </div>
+                            <div class="db-feature-item">
+                                <div class="feature-icon-small">
+                                    <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor"
+                                        stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                        <circle cx="12" cy="12" r="10"></circle>
+                                        <line x1="2" y1="12" x2="22" y2="12"></line>
+                                        <path
+                                            d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z">
+                                        </path>
+                                    </svg>
+                                </div>
+                                <span>可视化知识图谱</span>
+                            </div>
+                            <div class="db-feature-item">
+                                <div class="feature-icon-small">
+                                    <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor"
+                                        stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                        <polyline points="4 17 10 11 4 5"></polyline>
+                                        <line x1="12" y1="19" x2="20" y2="19"></line>
+                                    </svg>
+                                </div>
+                                <span>智能推荐系统</span>
+                            </div>
+                            <div class="db-feature-item">
+                                <div class="feature-icon-small">
+                                    <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor"
+                                        stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                        <polyline points="14 2 14 8 20 8"></polyline>
+                                        <line x1="16" y1="13" x2="8" y2="13"></line>
+                                        <line x1="16" y1="17" x2="8" y2="17"></line>
+                                        <polyline points="10 9 9 9 8 9"></polyline>
+                                    </svg>
+                                </div>
+                                <span>详细舞蹈考级标准</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="db-stats-container" data-aos="fade-up">
+                        <div class="db-stats-wrapper">
+                            <div class="db-stat-card">
+                                <div class="db-stat-value counter" data-count="13">0</div>
+                                <div class="db-stat-label">级考级考纲</div>
+                                <div class="db-stat-icon">
+                                    <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor"
+                                        stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                        <path
+                                            d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z">
+                                        </path>
+                                    </svg>
+                                </div>
+                            </div>
+
+                            <div class="db-stat-card">
+                                <div class="db-stat-value counter" data-count="10000">0</div>
+                                <div class="db-stat-label">官方视频</div>
+                                <div class="db-stat-icon">
+                                    <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor"
+                                        stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                        <polygon points="23 7 16 12 23 17 23 7"></polygon>
+                                        <rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect>
+                                    </svg>
+                                </div>
+                            </div>
+
+                            <div class="db-stat-card">
+                                <div class="db-stat-value counter" data-count="180000">0</div>
+                                <div class="db-stat-label">名家舞蹈作品</div>
+                                <div class="db-stat-icon">
+                                    <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor"
+                                        stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path>
+                                    </svg>
+                                </div>
+                            </div>
+
+                            <div class="db-stat-card big-number">
+                                <div class="db-stat-value counter" data-count="1000000">0</div>
+                                <div class="db-stat-label">用户视频资源</div>
+                                <div class="db-stat-icon">
+                                    <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor"
+                                        stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                                        <circle cx="9" cy="7" r="4"></circle>
+                                        <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                                        <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                                    </svg>
+                                </div>
+                            </div>
+
+                            <div class="db-stat-card">
+                                <div class="db-stat-value">5</div>
+                                <div class="db-stat-label">层级学习体系</div>
+                                <div class="db-stat-icon">
+                                    <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor"
+                                        stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                        <polyline points="9 11 12 14 22 4"></polyline>
+                                        <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path>
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="db-visual" data-aos="fade-left">
+                    <div class="db-carousel">
+                        <div class="carousel-inner">
+                            <div class="carousel-item active">
+                                <img src="images/舞蹈测评.png" alt="舞蹈测评画面">
+                                <div class="carousel-caption">
+                                    <h4>实时舞蹈测评</h4>
+                                    <p>AI算法精准评估舞蹈动作</p>
+                                </div>
+                            </div>
+                            <div class="carousel-item">
+                                <img src="images/动作生成.gif" alt="舞蹈动作生成">
+                                <div class="carousel-caption">
+                                    <h4>AI动作生成</h4>
+                                    <p>智能编排舞蹈动作序列</p>
+                                </div>
+                            </div>
+                            <div class="carousel-item">
+                                <img src="images/骨架节点.jpg" alt="骨架节点识别">
+                                <div class="carousel-caption">
+                                    <h4>骨架节点分析</h4>
+                                    <p>精确捕捉人体关键动作点</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="carousel-controls">
+                            <button class="carousel-control prev-btn">
+                                <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2"
+                                    fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="15 18 9 12 15 6"></polyline>
+                                </svg>
+                            </button>
+                            <div class="carousel-indicators">
+                                <span class="indicator active" data-index="0"></span>
+                                <span class="indicator" data-index="1"></span>
+                                <span class="indicator" data-index="2"></span>
+                            </div>
+                            <button class="carousel-control next-btn">
+                                <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2"
+                                    fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="9 18 15 12 9 6"></polyline>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="search-demo">
+                        <div class="search-header">
+                            <h4>舞蹈资源搜索引擎</h4>
+                            <p>基于Elasticsearch的专业舞蹈资源搜索</p>
+                        </div>
+                        <div class="search-bar">
+                            <input type="text" placeholder="搜索舞蹈动作、技巧或风格...">
+                            <button class="search-btn">
+                                <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2"
+                                    fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="11" cy="11" r="8"></circle>
+                                    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                                </svg>
+                            </button>
+                        </div>
+                        <div class="search-tags">
+                            <span class="search-tag">芭蕾基础</span>
+                            <span class="search-tag">中国舞</span>
+                            <span class="search-tag">现代舞</span>
+                            <span class="search-tag">爵士舞</span>
+                            <span class="search-tag">街舞</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="advantages-section" id="advantages">
+        <div class="container">
+            <div class="section-title">
+                <h2>核心优势</h2>
+                <p>我们的产品在舞蹈教育领域具备独特的竞争优势</p>
+            </div>
+            <div class="advantages-grid">
+                <div class="advantage-card">
+                    <div class="advantage-icon">🤖</div>
+                    <div class="advantage-content">
+                        <h3>"AI+" 模式个性化教学</h3>
+                        <p>虚拟人教学与AI舞蹈编舞系统的结合，形成创新舞蹈教育模式。系统利用数据分析提供个性化教学方案，通过五角星评价体系和优秀学员评选等激励机制，激发学习热情。产品打造全面舞蹈生态系统，满足用户从入门到进阶需求，AI编舞功能提供定制化舞蹈创作体验。
+                        </p>
+                    </div>
+                </div>
+
+                <div class="advantage-card">
+                    <div class="advantage-icon">💰</div>
+                    <div class="advantage-content">
+                        <h3>高性价比价格</h3>
+                        <p>提供极具竞争力的会员价格和丰富附加价值。教师端长期订阅可节省高达178元/年，学生端能节省128元/年，降低教育机构和个人教师经济压力。提供15天免费试用期，让潜在用户无风险体验全面功能。高级会员和企业会员享受虚拟人定制服务，软件内奖励回馈机制提升用户参与度。
+                        </p>
+                    </div>
+                </div>
+
+                <div class="advantage-card">
+                    <div class="advantage-icon">👑</div>
+                    <div class="advantage-content">
+                        <h3>专业性高质量服务</h3>
+                        <p>平台上的每位教师经过严格专业认证，确保教学高水准。一对一精准指导和高效沟通，增强教学互动性，提升个性化管理能力。数据驱动的精准教学，结合科学心理测评，为教学提供有力科学依据，确保教学质量与效果双重提升。
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="barrier-section">
+        <div class="container">
+            <div class="section-title">
+                <h2>核心壁垒</h2>
+                <p>我们建立了多重技术壁垒，确保产品的独特竞争力</p>
+            </div>
+            <div class="barriers-grid">
+                <!-- ... existing code ... -->
+                <div class="barrier-card">
+                    <!-- 添加扫描线效果 -->
+                    <div class="scanner"></div>
+                    <div class="barrier-icon">🔍</div>
+                    <h3>精准动作捕捉与反馈技术</h3>
+                    <div class="barrier-content">
+                        <p>系统采用先进的实时图像提取技术，逐帧对学员的舞蹈动作进行打分，确保与标准动作的精准对比和即时反馈。</p>
+                        <p>结合RAG和LLM技术，能够实时分析和评估学员动作，实现迅速比对，并及时纠正动作，帮助学员迅速掌握舞蹈技巧。</p>
+                    </div>
+                </div>
+
+                <div class="barrier-card">
+                    <!-- 添加扫描线效果 -->
+                    <div class="scanner"></div>
+                    <div class="barrier-icon">📊</div>
+                    <h3>自研舞蹈动作数据库</h3>
+                    <div class="barrier-content">
+                        <p>以官方考级视频为基础，拥有超过1万+条视频资源，覆盖从入门到进阶的13个等级，确保学习内容与官方考纲考点完全同步。</p>
+                        <p>系统将视频等级细分为入门、初级、中级、高级和进阶五层，收录超过18万+名家作品，提供100万+用户视频资源。</p>
+                    </div>
+                </div>
+
+                <div class="barrier-card">
+                    <!-- 添加扫描线效果 -->
+                    <div class="scanner"></div>
+                    <div class="barrier-icon">🤖</div>
+                    <h3>先进的人工智能算法与虚拟人定制编舞</h3>
+                    <div class="barrier-content">
+                        <p>集成深度学习算法和自然语言处理技术，实现用户需求的精确解析和舞蹈元素的创新生成。</p>
+                        <p>系统不仅限于动作的简单重组，更能创新生成舞蹈动作，涵盖多流派舞蹈风格，满足用户多样化的创作需求。</p>
+                    </div>
+                </div>
+
+                <div class="barrier-card">
+                    <!-- 添加扫描线效果 -->
+                    <div class="scanner"></div>
+                    <div class="barrier-icon">🎯</div>
+                    <h3>用户友好的界面设计与操作体验</h3>
+                    <div class="barrier-content">
+                        <p>系统界面设计简洁明了、易于操作，确保不同技术水平的用户均可无障碍操作。</p>
+                        <p>从初步概念构想到最终视频产出，实现虚拟人定制与一站式编舞体验，大幅提升用户体验。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="users" id="users">
+        <div class="container">
+            <div class="section-title">
+                <h2>适用人群</h2>
+                <p>我们的舞蹈动作捕捉系统适用于各类舞蹈爱好者和专业人士</p>
+            </div>
+            <div class="users-cards">
+                <div class="user-card">
+                    <div class="user-icon">👦</div>
+                    <h3>舞蹈爱好者</h3>
+                    <p>不论您是初学者还是有一定基础的舞蹈爱好者，我们的系统都能帮助您更快地掌握舞蹈动作要领，提升舞蹈水平。</p>
+                </div>
+                <div class="user-card">
+                    <div class="user-icon">👨‍🏫</div>
+                    <h3>舞蹈教师</h3>
+                    <p>通过我们的系统，舞蹈教师可以更直观地展示标准动作与学生动作的差异，提高教学效率，数据驱动的教学方式让教学更精准。</p>
+                </div>
+                <div class="user-card">
+                    <div class="user-icon">🏫</div>
+                    <h3>舞蹈机构</h3>
+                    <p>舞蹈培训机构可以使用我们的系统为学员提供更加专业、科学的舞蹈教学服务，提升机构竞争力，吸引更多潜在学员。</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="service-section" id="services">
+        <div class="container">
+            <div class="section-title">
+                <h2>服务形式与内容</h2>
+                <p>我们提供全面的服务体系，满足教师端和学生端的不同需求</p>
+            </div>
+
+            <div class="service-grid">
+                <div class="service-panel">
+                    <!-- 添加扫描线效果 -->
+                    <div class="scanner"></div>
+                    <div class="service-float-icon">👨‍🏫</div>
+
+                    <div class="service-header">
+                        <h3>教师端服务</h3>
+                    </div>
+
+                    <div class="service-content">
+                        <ul class="service-list">
+                            <li class="service-item">
+                                <div class="service-item-icon">✓</div>
+                                <div class="service-item-title">班级管理</div>
+                                <div class="service-item-desc">高效管理学生信息、学习进度和表现</div>
+                            </li>
+                            <li class="service-item">
+                                <div class="service-item-icon">✓</div>
+                                <div class="service-item-title">课程发布与管理</div>
+                                <div class="service-item-desc">轻松创建和管理舞蹈课程内容</div>
+                            </li>
+                            <li class="service-item">
+                                <div class="service-item-icon">✓</div>
+                                <div class="service-item-title">虚拟人定制</div>
+                                <div class="service-item-desc">创建个性化虚拟教学助手</div>
+                            </li>
+                            <li class="service-item">
+                                <div class="service-item-icon">✓</div>
+                                <div class="service-item-title">AI编舞辅助</div>
+                                <div class="service-item-desc">快速生成与优化舞蹈编排</div>
+                            </li>
+                            <li class="service-item">
+                                <div class="service-item-icon">✓</div>
+                                <div class="service-item-title">数据分析报告</div>
+                                <div class="service-item-desc">获取学生学习效果与进展报告</div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="service-panel">
+                    <!-- 添加扫描线效果 -->
+                    <div class="scanner"></div>
+                    <div class="service-float-icon">👩‍🎓</div>
+
+                    <div class="service-header">
+                        <h3>学生端服务</h3>
+                    </div>
+
+                    <div class="service-content">
+                        <ul class="service-list">
+                            <li class="service-item">
+                                <div class="service-item-icon">✓</div>
+                                <div class="service-item-title">高清教学视频</div>
+                                <div class="service-item-desc">随时随地学习优质舞蹈课程</div>
+                            </li>
+                            <li class="service-item">
+                                <div class="service-item-icon">✓</div>
+                                <div class="service-item-title">AI动作评估</div>
+                                <div class="service-item-desc">实时获取专业舞蹈动作反馈</div>
+                            </li>
+                            <li class="service-item">
+                                <div class="service-item-icon">✓</div>
+                                <div class="service-item-title">个人成长记录</div>
+                                <div class="service-item-desc">追踪学习进度和成长曲线</div>
+                            </li>
+                            <li class="service-item">
+                                <div class="service-item-icon">✓</div>
+                                <div class="service-item-title">虚拟人直播课堂</div>
+                                <div class="service-item-desc">体验互动式学习</div>
+                            </li>
+                            <li class="service-item">
+                                <div class="service-item-icon">✓</div>
+                                <div class="service-item-title">社区互动</div>
+                                <div class="service-item-desc">与其他舞蹈爱好者交流心得</div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="cta-section" id="contact">
+        <div class="cta-overlay"></div>
+        <div class="container">
+            <div class="cta-content">
+                <h2>开始您的AI舞蹈学习之旅</h2>
+                <p>立即体验15天免费试用，探索棱镜舞台带来的舞蹈教育革新</p>
+                <div class="cta-buttons">
+                    <a href="#" class="btn btn-white">免费试用15天</a>
+                    <a href="#" class="btn btn-outline">了解更多</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-col">
+                <div class="footer-logo">
+                    <img src="images/logo.png" alt="棱镜舞台Logo">
+                    <div class="footer-logo-text">棱镜舞台</div>
+                </div>
+                <p>AI舞蹈新视界 - 让舞蹈学习更加智能、高效、有趣</p>
+            </div>
+            <div class="footer-col">
+                <h3>快速链接</h3>
+                <ul>
+                    <li><a href="#home">首页</a></li>
+                    <li><a href="#features">功能特点</a></li>
+                    <li><a href="#technology">核心技术</a></li>
+                    <li><a href="#database">舞蹈库</a></li>
+                    <li><a href="#advantages">核心优势</a></li>
+                    <li><a href="#users">用户群体</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h3>联系我们</h3>
+                <ul>
+                    <li><a href="tel:18470508928">电话：18470508928</a></li>
+                    <li><a href="mailto:18470508928@163.com">邮箱：18470508928@163.com</a></li>
+                    <li>
+                        <address>地址：江西师范大学软件学院</address>
+                    </li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h3>关注我们</h3>
+                <div class="social-icons">
+                    <a href="#" title="微信公众号"><i class="icon-wechat"></i>微信公众号</a>
+                    <a href="#" title="微博"><i class="icon-weibo"></i>微博</a>
+                    <a href="#" title="抖音"><i class="icon-douyin"></i>抖音</a>
+                    <a href="#" title="B站"><i class="icon-bilibili"></i>B站</a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2025 棱镜舞台 版权所有 | <a href="#">隐私政策</a> | <a href="#">服务条款</a></p>
+        </div>
+    </footer>
+
+    <script>
+        // 初始化视差效果
+        document.addEventListener('DOMContentLoaded', function () {
+            // 视差效果
+            var rellax = new Rellax('.rellax');
+
+            // 导航栏滚动效果
+            window.addEventListener('scroll', function () {
+                var header = document.querySelector('header');
+                header.classList.toggle('scrolled', window.scrollY > 50);
+            });
+
+            // 移动端菜单
+            var menuToggle = document.querySelector('.menu-toggle');
+            var nav = document.querySelector('nav');
+
+            menuToggle.addEventListener('click', function () {
+                nav.classList.toggle('active');
+                this.classList.toggle('active');
+            });
+        });
+    </script>
+
+    <!-- 添加AOS动画库 -->
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // 初始化AOS动画库
+            AOS.init({
+                duration: 800,
+                once: true,
+                offset: 100
+            });
+        });
+    </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // 技术选项卡切换
+            const techTabs = document.querySelectorAll('.tech-tab');
+            const techPanels = document.querySelectorAll('.tech-panel');
+            const nodes = document.querySelectorAll('.node');
+
+            techTabs.forEach(tab => {
+                tab.addEventListener('click', function () {
+                    // 移除所有活跃状态
+                    techTabs.forEach(t => t.classList.remove('active'));
+                    techPanels.forEach(p => p.classList.remove('active'));
+
+                    // 添加当前活跃状态
+                    const tech = this.getAttribute('data-tech');
+                    this.classList.add('active');
+                    document.querySelector(`.tech-panel[data-tech="${tech}"]`).classList.add('active');
+                });
+            });
+
+            // 节点交互
+            nodes.forEach(node => {
+                node.addEventListener('click', function () {
+                    const tech = this.getAttribute('data-tech');
+
+                    // 激活对应的选项卡
+                    techTabs.forEach(t => t.classList.remove('active'));
+                    techPanels.forEach(p => p.classList.remove('active'));
+
+                    document.querySelector(`.tech-tab[data-tech="${tech}"]`).classList.add('active');
+                    document.querySelector(`.tech-panel[data-tech="${tech}"]`).classList.add('active');
+                });
+            });
+        });
+    </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // 数据库轮播功能
+            const carouselItems = document.querySelectorAll('.carousel-item');
+            const indicators = document.querySelectorAll('.indicator');
+            const prevBtn = document.querySelector('.prev-btn');
+            const nextBtn = document.querySelector('.next-btn');
+            let currentIndex = 0;
+
+            function showSlide(index) {
+                // 隐藏所有幻灯片
+                carouselItems.forEach(item => item.classList.remove('active'));
+                indicators.forEach(ind => ind.classList.remove('active'));
+
+                // 显示当前幻灯片
+                carouselItems[index].classList.add('active');
+                indicators[index].classList.add('active');
+                currentIndex = index;
+            }
+
+            // 指示器点击事件
+            indicators.forEach((indicator, index) => {
+                indicator.addEventListener('click', () => {
+                    showSlide(index);
+                });
+            });
+
+            // 上一张/下一张按钮
+            prevBtn.addEventListener('click', () => {
+                let newIndex = currentIndex - 1;
+                if (newIndex < 0) newIndex = carouselItems.length - 1;
+                showSlide(newIndex);
+            });
+
+            nextBtn.addEventListener('click', () => {
+                let newIndex = currentIndex + 1;
+                if (newIndex >= carouselItems.length) newIndex = 0;
+                showSlide(newIndex);
+            });
+
+            // 自动轮播
+            setInterval(() => {
+                let newIndex = currentIndex + 1;
+                if (newIndex >= carouselItems.length) newIndex = 0;
+                showSlide(newIndex);
+            }, 5000);
+
+            // 数字增长动画
+            const counters = document.querySelectorAll('.counter');
+
+            counters.forEach(counter => {
+                const target = parseInt(counter.getAttribute('data-count'));
+                const duration = 2000; // 动画持续2秒
+                const step = Math.ceil(target / (duration / 16)); // 使用Math.ceil确保能达到目标值
+                let current = 0;
+
+                // 格式化数字显示
+                const formatNumber = (num) => {
+                    // 对于百万级数字，使用简写
+                    if (num >= 1000000) {
+                        return (num / 1000000).toFixed(1) + 'M';
+                    }
+                    // 否则使用本地化数字格式
+                    return num.toLocaleString();
+                };
+
+                const updateCounter = () => {
+                    current += step;
+                    if (current >= target) {
+                        current = target; // 确保不会超过目标值
+                        counter.textContent = formatNumber(target);
+                        return;
+                    }
+                    counter.textContent = formatNumber(current);
+                    requestAnimationFrame(updateCounter);
+                };
+
+                const observer = new IntersectionObserver(entries => {
+                    if (entries[0].isIntersecting) {
+                        updateCounter();
+                        observer.disconnect();
+                    }
+                });
+
+                observer.observe(counter); // 添加这一行来观察元素
+            });
+        });
+    </script>
+
+    <!-- 添加粒子效果库 -->
+    <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // 初始化粒子背景
+            if (typeof particlesJS !== 'undefined') {
+                particlesJS('particles-js', {
+                    "particles": {
+                        "number": {
+                            "value": 100,
+                            "density": {
+                                "enable": true,
+                                "value_area": 1000
+                            }
+                        },
+                        "color": {
+                            "value": ["#00FFCC", "#2E3BFF", "#5648FF", "#00CCFF"]
+                        },
+                        "shape": {
+                            "type": "circle",
+                            "stroke": {
+                                "width": 0,
+                                "color": "#000000"
+                            },
+                            "polygon": {
+                                "nb_sides": 5
+                            }
+                        },
+                        "opacity": {
+                            "value": 0.3,
+                            "random": true,
+                            "anim": {
+                                "enable": true,
+                                "speed": 0.5,
+                                "opacity_min": 0.1,
+                                "sync": false
+                            }
+                        },
+                        "size": {
+                            "value": 2.5,
+                            "random": true,
+                            "anim": {
+                                "enable": true,
+                                "speed": 2,
+                                "size_min": 0.1,
+                                "sync": false
+                            }
+                        },
+                        "line_linked": {
+                            "enable": true,
+                            "distance": 150,
+                            "color": "#00FFCC",
+                            "opacity": 0.3,
+                            "width": 1
+                        },
+                        "move": {
+                            "enable": true,
+                            "speed": 0.8,
+                            "direction": "none",
+                            "random": true,
+                            "straight": false,
+                            "out_mode": "out",
+                            "bounce": false,
+                            "attract": {
+                                "enable": true,
+                                "rotateX": 600,
+                                "rotateY": 1200
+                            }
+                        }
+                    },
+                    "interactivity": {
+                        "detect_on": "canvas",
+                        "events": {
+                            "onhover": {
+                                "enable": true,
+                                "mode": "grab"
+                            },
+                            "onclick": {
+                                "enable": true,
+                                "mode": "push"
+                            },
+                            "resize": true
+                        },
+                        "modes": {
+                            "grab": {
+                                "distance": 140,
+                                "line_linked": {
+                                    "opacity": 0.8
+                                }
+                            },
+                            "bubble": {
+                                "distance": 200,
+                                "size": 5,
+                                "duration": 2,
+                                "opacity": 0.8,
+                                "speed": 3
+                            },
+                            "repulse": {
+                                "distance": 200,
+                                "duration": 0.4
+                            },
+                            "push": {
+                                "particles_nb": 4
+                            },
+                            "remove": {
+                                "particles_nb": 2
+                            }
+                        }
+                    },
+                    "retina_detect": true
+                });
+            }
+
+            // 添加多个扫描线效果
+            const addMultipleScanners = () => {
+                const sections = document.querySelectorAll('section');
+
+                sections.forEach(section => {
+                    // 清除已有的扫描线
+                    const existingScanners = section.querySelectorAll('.scanner');
+                    existingScanners.forEach(s => s.remove());
+
+                    // 添加新的扫描线
+                    const scanner1 = document.createElement('div');
+                    scanner1.className = 'scanner';
+                    scanner1.style.animationDuration = '4s';
+                    scanner1.style.animationDelay = '0s';
+
+                    const scanner2 = document.createElement('div');
+                    scanner2.className = 'scanner';
+                    scanner2.style.animationDuration = '6s';
+                    scanner2.style.animationDelay = '2s';
+
+                    section.appendChild(scanner1);
+                    section.appendChild(scanner2);
+                });
+
+                // 为每个技术卡片添加扫描线
+                const techCards = document.querySelectorAll('.tech-viz-container, .feature-card, .advantage-card, .barrier-card');
+                techCards.forEach(card => {
+                    const existingScanners = card.querySelectorAll('.scanner');
+                    if (existingScanners.length < 1) {
+                        const scanner = document.createElement('div');
+                        scanner.className = 'scanner';
+                        scanner.style.animationDuration = Math.random() * 3 + 3 + 's';
+                        scanner.style.animationDelay = Math.random() * 2 + 's';
+                        scanner.style.opacity = '0.4';
+                        card.appendChild(scanner);
+                    }
+                });
+            };
+
+            // 添加扫描线动画效果样式
+            const addScannerStyles = () => {
+                const style = document.createElement('style');
+                style.textContent = `
+                    .scanner {
+                        position: absolute;
+                        width: 100%;
+                        height: 2px;
+                        background: linear-gradient(90deg, transparent, var(--secondary-color), transparent);
+                        z-index: 10;
+                        opacity: 0.5;
+                        top: 0;
+                        animation: scanningEffect 5s linear infinite;
+                        pointer-events: none;
+                    }
+                    
+                    @keyframes scanningEffect {
+                        0% { top: 0; opacity: 0; }
+                        5% { opacity: 0.5; }
+                        50% { opacity: 0.5; }
+                        95% { opacity: 0.5; }
+                        100% { top: 100%; opacity: 0; }
+                    }
+                    
+                    .tech-viz-container .scanner,
+                    .feature-card .scanner,
+                    .advantage-card .scanner,
+                    .barrier-card .scanner {
+                        height: 1px;
+                        opacity: 0.4;
+                    }
+                `;
+                document.head.appendChild(style);
+            };
+
+            // 启动扫描线效果
+            setTimeout(() => {
+                addScannerStyles();
+                addMultipleScanners();
+
+                // 定期刷新扫描线，保持动画效果
+                setInterval(addMultipleScanners, 15000);
+            }, 1500);
+        });
+    </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // 给部分卡片添加浮动效果
+            const addFloatingEffects = () => {
+                const cards = document.querySelectorAll('.feature-card, .advantage-card, .barrier-card');
+
+                cards.forEach((card, index) => {
+                    // 为交替的卡片添加不同的浮动动画类
+                    if (index % 3 === 0) {
+                        card.classList.add('floating');
+                    } else if (index % 3 === 1) {
+                        card.classList.add('floating-slow');
+                    } else {
+                        card.classList.add('floating-fast');
+                    }
+
+                    // 添加发光边框
+                    card.classList.add('glow-border');
+                });
+            };
+
+            // 初始化3D效果
+            const init3DEffects = () => {
+                const cards = document.querySelectorAll('.feature-card, .advantage-card, .barrier-card');
+
+                cards.forEach(card => {
+                    card.addEventListener('mousemove', function (e) {
+                        const rect = this.getBoundingClientRect();
+                        const x = e.clientX - rect.left;
+                        const y = e.clientY - rect.top;
+
+                        const xRotation = (y - rect.height / 2) / (rect.height / 2) * 5;
+                        const yRotation = (x - rect.width / 2) / (rect.width / 2) * -5;
+
+                        this.style.transform = `perspective(1000px) rotateX(${xRotation}deg) rotateY(${yRotation}deg) scale(1.03)`;
+                    });
+
+                    card.addEventListener('mouseleave', function () {
+                        this.style.transform = '';
+                    });
+                });
+            };
+
+            // 调用初始化函数
+            setTimeout(() => {
+                addFloatingEffects();
+                init3DEffects();
+            }, 1000);
+        });
+    </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // 为卡片添加进度条
+            const addProgressBars = () => {
+                const cards = document.querySelectorAll('.feature-card, .advantage-card, .barrier-card');
+
+                cards.forEach((card, index) => {
+                    // 为每个卡片添加进度条
+                    const progressContainer = document.createElement('div');
+                    progressContainer.className = 'progress-container';
+
+                    const progressBar = document.createElement('div');
+                    progressBar.className = 'progress-bar';
+                    progressContainer.appendChild(progressBar);
+
+                    // 找到卡片内的段落，将进度条插入在段落之前
+                    const paragraph = card.querySelector('p');
+                    if (paragraph) {
+                        paragraph.parentNode.insertBefore(progressContainer, paragraph);
+                    } else {
+                        card.appendChild(progressContainer);
+                    }
+
+                    // 根据卡片类型设置不同的图标
+                    let iconClass = '';
+                    if (card.classList.contains('feature-card')) {
+                        iconClass = '⚡'; // 功能卡片使用闪电图标
+                    } else if (card.classList.contains('advantage-card')) {
+                        iconClass = '🔍'; // 优势卡片使用放大镜图标
+                    } else if (card.classList.contains('barrier-card')) {
+                        iconClass = '🛡️'; // 障碍卡片使用盾牌图标
+                    }
+
+
+                    // 添加到卡片顶部
+                    const title = card.querySelector('h3, h4');
+                    if (title) {
+                        title.classList.add('card-title');
+                        title.parentNode.insertBefore(iconDiv, title);
+                    } else {
+                        card.insertBefore(iconDiv, card.firstChild);
+                    }
+                });
+
+                // 激活进度条动画
+                setTimeout(() => {
+                    const progressBars = document.querySelectorAll('.progress-bar');
+                    progressBars.forEach(bar => {
+                        // 为每个进度条设置随机进度值
+                        const progress = Math.random() * 40 + 60; // 60% 到 100% 之间的随机值
+                        bar.style.width = `${progress}%`;
+                    });
+                }, 500);
+            };
+
+            // 初始化卡片效果
+            setTimeout(() => {
+                addProgressBars();
+            }, 2000);
+        });
+    </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // 服务面板动画效果
+            const addServicePanelEffects = () => {
+                const servicePanels = document.querySelectorAll('.service-panel');
+
+                servicePanels.forEach(panel => {
+                    // 为面板添加动态扫描线效果
+                    const scanner1 = document.createElement('div');
+                    scanner1.className = 'scanner';
+                    scanner1.style.animationDuration = '4s';
+                    scanner1.style.top = '30%';
+
+                    const scanner2 = document.createElement('div');
+                    scanner2.className = 'scanner';
+                    scanner2.style.animationDuration = '6s';
+                    scanner2.style.animationDelay = '2s';
+                    scanner2.style.top = '60%';
+
+                    panel.appendChild(scanner1);
+                    panel.appendChild(scanner2);
+
+                    // 服务项目鼠标悬停效果
+                    const serviceItems = panel.querySelectorAll('.service-item');
+                    serviceItems.forEach(item => {
+                        item.addEventListener('mouseenter', () => {
+                            const icon = item.querySelector('.service-item-icon');
+                            icon.style.transform = 'translateY(-50%) scale(1.2)';
+                            icon.style.boxShadow = '0 0 15px rgba(0, 255, 204, 0.5)';
+                        });
+
+                        item.addEventListener('mouseleave', () => {
+                            const icon = item.querySelector('.service-item-icon');
+                            icon.style.transform = 'translateY(-50%) scale(1)';
+                            icon.style.boxShadow = '0 0 10px rgba(0, 255, 204, 0.3)';
+                        });
+                    });
+                });
+            };
+
+            // 初始化效果
+            setTimeout(addServicePanelEffects, 1000);
+        });
+    </script>
+</body>
+
+</html>
